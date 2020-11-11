@@ -29,6 +29,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
     const STATUS_INACTIVE = 0;
     const STATUS_ACTIVE = 1;
+    const PASSWORD_RESET_TOKEN_EXPIRATION = 3600; // 1 hour
 
     public $password;
     public $verifyPassword;
