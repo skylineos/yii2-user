@@ -70,9 +70,8 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
          */
         return [
             [['lastLogin', 'passwordHash', 'passwordResetTokenExp'], 'safe'],
-            [['name', 'email', 'agencyId'], 'required'],
-            [['agencyId', 'status'], 'integer'],
-            [['adminTheme'], 'string', 'max' => 5],
+            [['name', 'email'], 'required'],
+            [['status'], 'integer'],
             [['authKey'], 'string', 'max' => 32],
             [['passwordResetToken', 'passwordHash'], 'string', 'max' => 255],
             [['email', 'name', 'role'], 'string', 'max' => 100],
@@ -91,17 +90,6 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
                 }
             ],
             ['password', 'compare', 'compareAttribute' => 'verifyPassword'],
-            [
-                [
-                    'agencyId'
-                ],
-                'exist',
-                'skipOnError' => true,
-                'targetClass' => Agency::className(),
-                'targetAttribute' => [
-                    'agencyId' => 'id'
-                ]
-            ],
         ];
     }
 
@@ -118,21 +106,11 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             'email' => 'Email',
             'passwordHash' => 'Password Hash',
             'name' => 'Name',
-            'agencyId' => 'Agency',
             'status' => 'Status',
             'dateCreated' => 'Date Created',
             'lastModified' => 'Last Modified',
             'modifiedBy' => 'Modified By',
-            'adminTheme' => 'Admin Theme',
         ];
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getAgency()
-    {
-        return $this->hasOne(Agency::className(), ['id' => 'agencyId']);
     }
 
     /**
