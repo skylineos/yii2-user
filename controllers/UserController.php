@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\citizenAdmin\controllers;
+namespace app\modules\user\controllers;
 
 use Yii;
 use app\modules\user\models\User;

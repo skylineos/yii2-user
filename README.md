@@ -1,8 +1,34 @@
 ### Installation
 
 1. Clone this module to @app/module/User
-2. Create the User table `php yii migrate/up --migrationPath=@app/module/user/migrations`
+2. Create the User table `php yii migrate/up --migrationPath=@app/modules/user/migrations`
 3. Configure params in `config/params.php`
+4. Tell yii to use this module for user management
+    1. edit `config/web.php` ,find and change (or add) the `user` block in `components` as follows
+    ```
+    'components' => [
+        ...*** ADD THIS PART BELOW ***
+        'user' => [
+            'identityClass' => 'app\modules\user\models\User',
+            'enableAutoLogin' => true,
+        ],
+        ...
+    ]
+    ```
+5. Add this module to the bootstrap for easy routing/reference
+    1. edit `config/web.php`, find the `modules` block (or add it if it doesn't exist) and add the following:
+    ```
+    'components' => [
+        ...
+    ],
+    'modules' => [
+        ...*** ADD THIS PART BELOW ***
+        'user' => [
+            'class' => 'app\modules\user\Module',
+            'defaultRoute' => 'UserController',
+        ],
+        ...
+    ]
 
 ### Params
 
@@ -16,7 +42,7 @@
 
 ### Migrations
 
-`php yii migrate/up --migrationPath=@app/module/user/migrations`
+`php yii migrate/up --migrationPath=@app/modules/user/migrations`
 
 ### Dependencies
 
