@@ -3,20 +3,21 @@
 namespace app\modules\user\controllers;
 
 use Yii;
-use app\modules\user\models\User;
-use app\modules\user\models\search\UserSearch;
+use Aws\Ses\SesClient;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use Aws\Ses\SesClient;
-use yii\helpers\ArrayHelper;
+use yii\filters\AccessControl;
+use app\modules\user\models\User;
+use app\modules\user\models\forms\LoginForm;
+use app\modules\user\models\search\UserSearch;
 
 /**
  * UserController implements the CRUD actions for User model.
  */
 class UserController extends Controller
 {
-    const LAYOUT_LOGIN = 'login';
+    const LAYOUT_LOGIN = '@app/modules/user/views/layouts/login';
 
     /**
      * @inheritdoc
@@ -24,6 +25,32 @@ class UserController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'actions' => [
+                            'logout',
+                            'index',
+                            'create',
+                            'update',
+                            'delete',
+                        ],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                    [
+                        'actions' => [
+                            'login',
+                            'complete-registration',
+                            'request',
+                            'reset',
+                        ],
+                        'allow' => true,
+                        'roles' => ['?'],
+                    ]
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -31,6 +58,40 @@ class UserController extends Controller
                 ],
             ],
         ];
+    }
+
+    /**
+     * Login action.
+     *
+     * @return Response|string
+     */
+    public function actionLogin()
+    {
+        if (!Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+
+        $model = new LoginForm();
+        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            return $this->goBack();
+        }
+
+        $model->password = '';
+        return $this->render('security/login', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * Logout action.
+     *
+     * @return Response
+     */
+    public function actionLogout()
+    {
+        Yii::$app->user->logout();
+
+        return $this->goHome();
     }
 
     /**
@@ -164,7 +225,8 @@ class UserController extends Controller
 
     public function actionCompleteRegistration()
     {
-        $this->layout = 'login';
+        $this->layout = self::LAYOUT_LOGIN;
+
         $request = \Yii::$app->request;
 
         $model = new \app\modules\user\models\forms\ResetPassword();
@@ -220,7 +282,7 @@ class UserController extends Controller
      */
     public function actionRequest()
     {
-        $this->layout = 'login';
+        $this->layout = self::LAYOUT_LOGIN;
 
         $model = new \app\modules\user\models\forms\RequestPasswordReset();
 
@@ -264,7 +326,8 @@ class UserController extends Controller
 
     public function actionReset()
     {
-        $this->layout = 'login';
+        $this->layout = self::LAYOUT_LOGIN;
+
         $request = \Yii::$app->request;
 
         $model = new \app\modules\user\models\forms\ResetPassword();
