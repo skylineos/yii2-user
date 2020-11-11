@@ -6,18 +6,18 @@
 
 use app\modules\metronic\widgets\ActiveForm;
 
-$this->title = 'Citizen Administrative Login';
+$this->title = 'Please Sign In';
 ?>
     
 <div class="kt-login__container">
     <div class="kt-login__logo">
         <a href="#">
-            <img src="/images/citizenLogo.png">
+            <i class="flaticon-lock" style="font-size: 6em"></i>
         </a>
     </div>
     <div class="kt-login__signin">
         <div class="kt-login__head">
-            <h3 class="kt-login__title">Sign In To Citizen</h3>
+            <h3 class="kt-login__title">Please Sign In</h3>
         </div>
         
         <?php if (\Yii::$app->session->hasFlash('recoverySent')) { ?>
