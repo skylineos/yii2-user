@@ -4,7 +4,6 @@ namespace app\modules\user\commands;
 
 use yii\console\Controller;
 use yii\console\ExitCode;
-use Aws\Ses\SesClient;
 use yii\validators\EmailValidator;
 use app\modules\user\models\User;
 
@@ -13,7 +12,8 @@ class UserController extends Controller
     /**
      * Add new user. Supply an email address and instructions to complete the setup will be sent to the new user
      *
-     * @param string $email
+     * @param string $email The email address of the new user account
+     * @param string $uri The current uri this script should direct the user to (eg. https://www.google.com)
      * @return integer yii\console\ExitCode
      */
     public function actionAdd(string $email = null) : int
@@ -25,60 +25,43 @@ class UserController extends Controller
             return ExitCode::DATAERR;
         }
 
-        $sesClient = new SesClient([
-            'profile' => \Yii::$app->params['sesClient']['profile'],
-            'version' => \Yii::$app->params['sesClient']['version'],
-            'region'  => \Yii::$app->params['sesClient']['region'],
-        ]);
+        \Yii::$app->db->createCommand()->checkIntegrity(false)->execute();
 
-        /**
-         * Send the user an email directing them to reset their password and login
-         */
-        $model = new User();
-        $model->name = $model->email = $email;
+        $model = new User;
+        $model->email = $model->name = $email;
 
-        /**
-         * Set Blank Password
-         */
         $security = \Yii::$app->getSecurity();
         $model->passwordHash = $security->generatePasswordHash($security->generateRandomString(16));
         $model->passwordResetToken = $security->generateRandomString(255);
         $model->passwordResetTokenExp = strftime('%F %T', strtotime('+5 day'));
 
-        if ($model->save(false)) {
-            $view = new \yii\web\View;
-
-            $sesClient->sendEmail([
-                'Destination' => [
-                    'ToAddresses' => [$model->email],
-                ],
-                'ReplyToAddresses' => [\Yii::$app->params['supportEmail']],
-                'Source' => \Yii::$app->params['supportEmail'],
-                'Message' => [
-                    'Body' => [
-                        'Html' => [
-                            'Charset' => 'UTF-8',
-                            'Data' => $view->render('@app/modules/user/mail/create-account-html', [
-                                'model' => $model,
-                            ]),
-                        ],
-                        'Text' => [
-                            'Charset' => 'UTF-8',
-                            'Data' => $view->render('@app/modules/user/mail/create-account-text', [
-                                'model' => $model,
-                            ]),
-                        ],
-                    ],
-                    'Subject' => [
-                        'Charset' => 'UTF-8',
-                        'Data' => \Yii::$app->params['newUserEmailSubject'],
-                    ],
-                ],
-            ]);
-
+        if ($model->save()) {
+            \Yii::$app->db->createCommand()->checkIntegrity(true)->execute();
+            echo "The user account has been created with a random password. You should direct the user to 'Forgot Password' in order to finish creating their account.\n";
             return ExitCode::OK;
         }
 
+        \Yii::$app->db->createCommand()->checkIntegrity(true)->execute();
+        return ExitCode::UNSPECIFIED_ERROR;
+    }
+
+    public function actionDelete(string $email = null) : int
+    {
+        $emailValidator = new EmailValidator();
+
+        if ($email === null || !$emailValidator->validate($email)) {
+            echo "Email not provided or not valid";
+            return ExitCode::DATAERR;
+        }
+
+        $user = User::find()->where(['email' => $email])->one();
+        if ($user) {
+            $user->delete();
+            echo "User Deleted\n";
+            return ExitCode::OK;
+        }
+
+        echo "Could not find user to delete\n";
         return ExitCode::UNSPECIFIED_ERROR;
     }
 }

@@ -36,7 +36,7 @@ class RequestPasswordReset extends Model
         if ($email !== null && $token !== null) {
             // TODO: build this with a proper template and content
             $message = Yii::$app->mailer->compose('@app/modules/user/mail/password-recovery', [
-                'logo' => Yii::getAlias('@app/web/images/skylinenet.png'),
+                'logo' => \Yii::getAlias('@app').'/web/static/media/logo.svg',
                 'token' => $token,
                 'email' => $email,
                 ])

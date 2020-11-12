@@ -160,14 +160,12 @@ class UserController extends Controller
                                 'Charset' => 'UTF-8',
                                 'Data' => $view->render('@app/modules/citizenAdmin/mail/create-account-html', [
                                     'model' => $model,
-                                    'logo' => 'images/citizenLogo.png',
                                 ]),
                             ],
                             'Text' => [
                                 'Charset' => 'UTF-8',
                                 'Data' => $view->render('@app/modules/citizenAdmin/mail/create-account-text', [
                                     'model' => $model,
-                                    'logo' => 'images/citizenLogo.png',
                                 ]),
                             ],
                         ],
@@ -306,7 +304,7 @@ class UserController extends Controller
                          your password'
                     );
 
-                    return $this->goHome();
+                    return $this->redirect(['/cms']);
                 }
             }
         }
@@ -347,7 +345,7 @@ class UserController extends Controller
                     );
                 }
 
-                return $this->redirect('/');
+                return $this->redirect('/cms');
             }
         }
 

@@ -18,7 +18,7 @@ $this->title = 'Complete Your Account Registration';
 <div class="kt-login__container">
     <div class="kt-login__logo">
         <a href="#">
-            <img src="/images/citizenLogo.png">
+            <img src="">
         </a>
     </div>
     <div class="kt-login__signin">

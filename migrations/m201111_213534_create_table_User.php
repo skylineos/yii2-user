@@ -34,6 +34,7 @@ class m201111_213534_create_table_User extends Migration
             'modifiedBy',
             'User',
             'id',
+            'CASCADE'
         );
     }
 
@@ -48,8 +49,6 @@ class m201111_213534_create_table_User extends Migration
         );
 
         $this->dropTable('User');
-
-        return false;
     }
 
     /*

@@ -1,7 +1,7 @@
 ### Installation
 
 1. Clone this module to @app/module/User
-2. Create the User table `php yii migrate/up --migrationPath=@app/modules/user/migrations`
+2. Create the User table `docker-compose exec yii2 php yii migrate/up --migrationPath=@app/modules/user/migrations`
 3. Configure params in `config/params.php`
 4. Tell yii to use this module for user management
     1. edit `config/web.php` ,find and change (or add) the `user` block in `components` as follows

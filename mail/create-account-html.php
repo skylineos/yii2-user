@@ -13,9 +13,8 @@ use yii\helpers\Url;
             <table class="email-content" width="100%" cellpadding="0" cellspacing="0">
                 <tr>
                     <td class="email-masthead">
-                        <img src="<?= Url::home(true).'/'.$logo; ?>"
-                            alt="Application" align="center" hspace="30"><br><br>
-                        <?= Html::a('Application', Url::home(true), ['class' => 'email-masthead_name']) ?>
+                        <img src="" alt="Application" align="center" hspace="30"><br><br>
+                        <?= Html::a('Application', \Yii::$app->params['sitehost'].'/cms', ['class' => 'email-masthead_name']) ?>
                     </td>
                 </tr>
                 <!-- Email Body -->
@@ -42,9 +41,19 @@ use yii\helpers\Url;
                                                             <table border="0" cellspacing="0" cellpadding="0">
                                                                 <tr>
                                                                     <td>
-<?= Html::a('Click here to continue',
-    Url::to(['/user/user/complete-registration', 'token' => $model->passwordResetToken, 'email' => $model->email], true),
-    ['class' => 'button button--green',
+<?= Html::a(
+    'Click here to continue',
+    Url::to(
+        [
+            '/user/user/complete-registration',
+            'token' => $model->passwordResetToken,
+            'email' => $model->email
+        ],
+        true
+    ),
+    [
+            'class' => 'button button--green',
+        ]
 ) ?>
                                                                     </td>
                                                                 </tr>
