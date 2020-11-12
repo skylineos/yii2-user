@@ -79,8 +79,10 @@ class UserController extends Controller
         }
 
         $model->password = '';
+
         return $this->render('security/login', [
             'model' => $model,
+            'forgotPasswordModel' => new \app\modules\user\models\forms\RequestPasswordReset(),
         ]);
     }
 
@@ -146,7 +148,7 @@ class UserController extends Controller
                  * Send the user an email directing them to reset their password and login
                  */
                 $view = new \yii\web\View;
-                $result = $sesClient->sendEmail([
+                $sesClient->sendEmail([
                     'Destination' => [
                         'ToAddresses' => [$model->email],
                     ],
@@ -284,12 +286,12 @@ class UserController extends Controller
      */
     public function actionRequest()
     {
-        $this->layout = self::LAYOUT_LOGIN;
-
         $model = new \app\modules\user\models\forms\RequestPasswordReset();
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            $user = User::find()->where(['email' => Yii::$app->request->post('RequestPasswordReset')['email'] ])->one();
+            $user = User::find()
+                ->where(['email' => Yii::$app->request->post('RequestPasswordReset')['email'] ])
+                ->one();
 
             if (is_object($user) && isset($user->email)) {
                 $token = \Yii::$app->getSecurity()->generateRandomString(255);
@@ -305,25 +307,16 @@ class UserController extends Controller
                     );
 
                     return $this->goHome();
-                } else {
-                    Yii::$app->session->setFlash(
-                        'accountNotFound',
-                        'There was an issue processing your request. Please contact support.'
-                    );
                 }
-            } else {
-                \Yii::$app->session->setFlash(
-                    'accountNotFound',
-                    'The email address you entered is not associated with any accounts. Please check your entry and 
-                    try again. If you are still having difficulties accessing your account, please contact 
-                    <a href="mailto:support@skylinenet.net">support@skylinenet.net</a>'
-                );
             }
         }
 
-        return $this->render('recovery/request', [
-            'model' => $model,
-        ]);
+        Yii::$app->session->setFlash(
+            'accountNotFound',
+            'There was an issue processing your request. Please contact support.'
+        );
+
+        return $this->redirect(['/user/user/login']);
     }
 
     public function actionReset()

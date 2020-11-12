@@ -29,6 +29,20 @@
         ],
         ...
     ]
+    ```
+6. Edit `config/console.php` and add the routes for this module's commands
+```
+'bootstrap' => [
+    // ... other bootstrap components ...
+    'user'
+],
+'modules' => [
+    // ... other modules ...
+    'user' => [
+        'class' => 'app\modules\user\Module',
+    ],
+],
+```
 
 ### Params
 

@@ -2,10 +2,12 @@
 
 namespace app\modules\user;
 
+use yii\base\BootstrapInterface;
+
 /**
  * module definition class
  */
-class Module extends \yii\base\Module
+class Module extends \yii\base\Module implements BootstrapInterface
 {
     /**
      * @inheritdoc
@@ -21,5 +23,15 @@ class Module extends \yii\base\Module
 
         // custom initialization code goes here
         $this->modules = [];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function bootstrap($app)
+    {
+        if ($app instanceof \yii\console\Application) {
+            $this->controllerNamespace = 'app\modules\user\commands';
+        }
     }
 }
