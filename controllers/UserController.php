@@ -13,7 +13,7 @@ use app\modules\user\models\forms\LoginForm;
 use app\modules\user\models\search\UserSearch;
 
 /**
- * UserController implements the CRUD actions for User model.
+ * UserController implements the CRUD  and authentication (login/logout/reset/etc) actions for User model.
  */
 class UserController extends Controller
 {
@@ -21,6 +21,7 @@ class UserController extends Controller
 
     /**
      * @inheritdoc
+     * @see https://www.yiiframework.com/doc/guide/2.0/en/security-authorization
      */
     public function behaviors()
     {
@@ -28,6 +29,7 @@ class UserController extends Controller
             'access' => [
                 'class' => AccessControl::className(),
                 'rules' => [
+                    // Must be authenticated
                     [
                         'actions' => [
                             'logout',
@@ -39,10 +41,10 @@ class UserController extends Controller
                         'allow' => true,
                         'roles' => ['@'],
                     ],
+                    // Must be guest
                     [
                         'actions' => [
                             'login',
-                            'complete-registration',
                             'request',
                             'reset',
                         ],
@@ -70,7 +72,7 @@ class UserController extends Controller
         $this->layout = self::LAYOUT_LOGIN;
 
         if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
+            return $this->redirect(['/cms']);
         }
 
         $model = new LoginForm();
@@ -78,6 +80,7 @@ class UserController extends Controller
             return $this->goBack();
         }
 
+        // Do not render the page with the user's previous password attempt. #security
         $model->password = '';
 
         return $this->render('security/login', [
@@ -135,46 +138,20 @@ class UserController extends Controller
 
 
             if ($model->save()) {
-                /**
-                 * Set up SES
-                 */
-                $sesClient = new SesClient([
-                    'profile' => \Yii::$app->params['sesClient']['profile'],
-                    'version' => \Yii::$app->params['sesClient']['version'],
-                    'region'  => \Yii::$app->params['sesClient']['region'],
-                ]);
+                // Load the module so we can access necessary parameters
+                $userModule = \Yii::$app->getModule('user');
 
-                /**
-                 * Send the user an email directing them to reset their password and login
-                 */
-                $view = new \yii\web\View;
-                $sesClient->sendEmail([
-                    'Destination' => [
-                        'ToAddresses' => [$model->email],
-                    ],
-                    'ReplyToAddresses' => [\Yii::$app->params['supportEmail']],
-                    'Source' => 'citizen@skylinecsg.com',
-                    'Message' => [
-                        'Body' => [
-                            'Html' => [
-                                'Charset' => 'UTF-8',
-                                'Data' => $view->render('@app/modules/citizenAdmin/mail/create-account-html', [
-                                    'model' => $model,
-                                ]),
-                            ],
-                            'Text' => [
-                                'Charset' => 'UTF-8',
-                                'Data' => $view->render('@app/modules/citizenAdmin/mail/create-account-text', [
-                                    'model' => $model,
-                                ]),
-                            ],
-                        ],
-                        'Subject' => [
-                            'Charset' => 'UTF-8',
-                            'Data' => \Yii::$app->params['newUserEmailSubject'],
-                        ],
-                    ],
-                ]);
+                $message = Yii::$app->mailer->compose('@app/modules/user/mail/create-account-html', [
+                    'logo' => \Yii::getAlias('@app').'/web/static/media/logo.svg',
+                    'model' => $model,
+                    ])
+                    ->setFrom([
+                        $userModule->supportEmail => $userModule->supportEmailDisplayName,
+                        ])
+                    ->setTo($model->email)
+                    ->setSubject($userModule->newUserEmailSubject);
+
+                $message->send();
 
                 \Yii::$app->session->setFlash('success', 'User Created');
                 return $this->redirect(['index']);
@@ -189,19 +166,17 @@ class UserController extends Controller
     /**
      * Updates an existing User model.
      * If update is successful, the browser will be redirected to the 'index' page.
+     *
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id)
+    public function actionUpdate(int $id)
     {
         $model = $om = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post())) {
-            $model->passwordHash = (strlen($model->password) > 0)
-                ? \Yii::$app->getSecurity()->generatePasswordHash($model->password)
-                : $om->passwordHash;
-
             if ($model->save()) {
+                \Yii::$app->session->setFlash('success', 'User Updated');
                 return $this->redirect(['index']);
             }
         }
@@ -214,6 +189,7 @@ class UserController extends Controller
     /**
      * Deletes an existing User model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
+     *
      * @param integer $id
      * @return mixed
      */
@@ -225,61 +201,11 @@ class UserController extends Controller
         return $this->redirect(['index']);
     }
 
-    public function actionCompleteRegistration()
-    {
-        $this->layout = self::LAYOUT_LOGIN;
-
-        $request = \Yii::$app->request;
-
-        $model = new \app\modules\user\models\forms\ResetPassword();
-
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            $user = User::findByToken($model->email, $model->token);
-
-            if (is_object($user) && isset($user->id)) {
-                $user->passwordHash = \Yii::$app->getSecurity()->generatePasswordHash($model->password);
-                $user->verifyPassword = $user->passwordHash;
-                $user->passwordResetToken = \Yii::$app->getSecurity()->generateRandomString(50);
-
-                if ($user->save()) {
-                    \Yii::$app->session->setFlash(
-                        'recoverySent',
-                        'Your password has been reset. Please log in to continue.'
-                    );
-                } else {
-                    \Yii::$app->session->setFlash(
-                        'resetFailed',
-                        'We were unable to reset your password. Please contact support.'
-                    );
-                }
-
-                return $this->redirect('/');
-            }
-        }
-
-        $user = User::findByToken($request->get('email'), $request->get('token'));
-
-        if (strlen($request->get('email')) < 1 || strlen($request->get('token')) < 1 || $user === null) {
-            \Yii::$app->session->setFlash(
-                'resetFailed',
-                'We were unable to reset your password. Please contact support.'
-            );
-            return $this->goHome();
-        }
-
-        $model->email = $request->get('email');
-        $model->token = $request->get('token');
-
-        return $this->render('security/complete-registration', [
-            'model' => $model,
-            'user' => $user,
-        ]);
-    }
-
     /**
-     * Renders and handels the forgot-password interface
+     * Handles the password reset request; sets a new reset token and sends the recovery password to the
+     * requesting account. The forgot password inteface is rendered in self::actionLogin.
      * A contextual flash message will be set and the user redirected to the login page
-     * @param integer $id
+     *
      * @return mixed
      */
     public function actionRequest()
@@ -317,6 +243,23 @@ class UserController extends Controller
         return $this->redirect(['/user/user/login']);
     }
 
+    /**
+     * After a user is created via the cms, they are sent an email with instructions to complete their
+     * registration (set their password). Those instructions direct the user to this action
+     *
+     * -- or --
+     *
+     * After a user successfully submits a 'reset-password' request, the email they receive will direct them
+     * here.
+     *
+     * This renders the 'reset-password' form and handles the subsequent post
+     *
+     * To complete the form, post must validate according to \app\modules\user\models\forms\ResetPassword()
+     * To start the process at all, get['email'] and get['token'] must be procided and a user matching that
+     * pair must be found (the token is also compared for age @see app\modules\user\models\User::passwordResetTokenExp)
+     *
+     * @return response
+     */
     public function actionReset()
     {
         $this->layout = self::LAYOUT_LOGIN;
@@ -325,6 +268,9 @@ class UserController extends Controller
 
         $model = new \app\modules\user\models\forms\ResetPassword();
 
+        /**
+         * Handle the request after the password is given and the form is submitted
+         */
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $user = User::findByToken($model->email, $model->token);
 
@@ -351,12 +297,15 @@ class UserController extends Controller
 
         $user = User::findByToken($request->get('email'), $request->get('token'));
 
-        if (strlen($request->get('email')) < 1 || strlen($request->get('token')) < 1 || $user === null) {
+        /**
+         * Make sure the expected parameters exist and are at least
+         */
+        if ($request->get('email') === null || !$request->get('token') === null || $user === null) {
             \Yii::$app->session->setFlash(
                 'resetFailed',
                 'We were unable to reset your password. Please contact support.'
             );
-            return $this->goHome();
+            return $this->redirect('/cms');
         }
 
         $model->email = $request->get('email');

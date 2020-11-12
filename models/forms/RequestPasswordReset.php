@@ -34,15 +34,18 @@ class RequestPasswordReset extends Model
     public function sendPasswordRecoveryEmail($email = null, $token = null)
     {
         if ($email !== null && $token !== null) {
+            // Load the module so we can access necessary parameters
+            $userModule = \Yii::$app->getModule('user');
+
             // TODO: build this with a proper template and content
             $message = Yii::$app->mailer->compose('@app/modules/user/mail/password-recovery', [
                 'logo' => \Yii::getAlias('@app').'/web/static/media/logo.svg',
                 'token' => $token,
                 'email' => $email,
                 ])
-                ->setFrom([\Yii::$app->params['supportEmail'] => \Yii::$app->params['supportEmailDisplayName']])
+                ->setFrom([$userModule->supportEmail => $userModule->supportEmailDisplayName])
                 ->setTo($email)
-                ->setSubject(\Yii::$app->params['passwordRecoverySubject']);
+                ->setSubject($userModule->passwordRecoverySubject);
 
             $message->send();
 

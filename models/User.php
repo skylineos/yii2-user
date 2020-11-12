@@ -31,9 +31,19 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     const STATUS_ACTIVE = 1;
     const PASSWORD_RESET_TOKEN_EXPIRATION = 3600; // 1 hour
 
-    public $password;
-    public $verifyPassword;
-    public $role;
+    /**
+     * There is no property for password of verifyPassword, only passwordHash.
+     *
+     * @var string
+     */
+    public string $password;
+
+    /**
+     * There is no property for password of verifyPassword, only passwordHash.
+     *
+     * @var string
+     */
+    public string $verifyPassword;
 
     /**
      * @inheritdoc
@@ -67,7 +77,8 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function rules()
     {
         /**
-         * Password is only required if it's a new record
+         * passwordHash is deemed safe as it will be explicitly set in the various methods and should never
+         * need to be required by independent actions (eg. update).
          */
         return [
             [['lastLogin', 'passwordHash', 'passwordResetTokenExp'], 'safe'],
@@ -138,10 +149,20 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      */
     public static function findByEmail($email)
     {
-        return User::findOne(['email' => $email, 'status' => self::STATUS_ACTIVE]);
+        return User::findOne([
+            'email' => $email,
+            'status' => self::STATUS_ACTIVE
+            ]);
     }
 
-    public static function findByToken($email, $token)
+    /**
+     * Finds a user for password reset with given email/token (where token is not expired)
+     *
+     * @param [type] $email
+     * @param [type] $token
+     * @return static|null
+     */
+    public static function findByToken(string $email, string $token)
     {
         $date = new \DateTime('-24 Hours', new \DateTimeZone('UTC'));
         return User::find()
@@ -186,7 +207,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     }
 
     /**
-     * Username is not a thing we use, but it is required in the base rbac system, so we've aliased it
+     * Alias for email as some packages require a 'user' property (rbac)
      *
      * @return string
      */

@@ -4,6 +4,7 @@ use yii\helpers\Url;
 
 /* @var $this \yii\web\View view component instance */
 /* @var $message \yii\mail\BaseMessage instance of newly created mail message */
+/* @todo understand and fix phpcs so it stops messing with the formatting of the mail directory */
 
 ?>
 <span class="preheader">A new user account has been created for you at </span>
@@ -13,8 +14,9 @@ use yii\helpers\Url;
             <table class="email-content" width="100%" cellpadding="0" cellspacing="0">
                 <tr>
                     <td class="email-masthead">
-                        <img src="" alt="Application" align="center" hspace="30"><br><br>
-                        <?= Html::a('Application', \Yii::$app->params['sitehost'].'/cms', ['class' => 'email-masthead_name']) ?>
+                        <img src="<?= \Yii::$app->params['logoSrc'] ?>" alt="Application" align="center" hspace="30">
+                        <br><br>
+                        <?= Html::a(\Yii::$app->id, Url::home(true).'/cms', ['class' => 'email-masthead_name']) ?>
                     </td>
                 </tr>
                 <!-- Email Body -->
@@ -26,7 +28,19 @@ use yii\helpers\Url;
                                 <td class="content-cell">
                                     <h1>Hi,</h1>
                                     <p>A new account has been registered at the Application. Please
-                                        <?= Html::a('click here to finish the account creation process', Url::to(['/user/user/complete-registration', 'token' => $model->passwordResetToken, 'email' => $model->email], true), ['target' => '_blank']) ?>.
+
+<?= Html::a(
+    'click here to finish the account creation process',
+    Url::to([
+        '/user/user/complete-registration',
+        'token' => $model->passwordResetToken,
+        'email' => $model->email
+    ], true),
+    [
+        'target' => '_blank'
+    ]
+) ?>.
+                                         
                                     </p>
                                     <!-- Action -->
                                     <table class="body-action" align="center" width="100%" cellpadding="0"
@@ -34,7 +48,7 @@ use yii\helpers\Url;
                                         <tr>
                                             <td align="center">
                                                 <!-- Border based button
-                       https://litmus.com/blog/a-guide-to-bulletproof-buttons-in-email-design -->
+                                                https://litmus.com/blog/a-guide-to-bulletproof-buttons-in-email-design -->
                                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                                     <tr>
                                                         <td align="center">
@@ -43,17 +57,14 @@ use yii\helpers\Url;
                                                                     <td>
 <?= Html::a(
     'Click here to continue',
-    Url::to(
-        [
-            '/user/user/complete-registration',
-            'token' => $model->passwordResetToken,
-            'email' => $model->email
-        ],
-        true
-    ),
+    Url::to([
+        '/user/user/complete-registration',
+        'token' => $model->passwordResetToken,
+        'email' => $model->email
+    ], true),
     [
-            'class' => 'button button--green',
-        ]
+        'class' => 'button button--green',
+    ]
 ) ?>
                                                                     </td>
                                                                 </tr>
@@ -70,7 +81,15 @@ use yii\helpers\Url;
                                             <td>
                                                 <p class="sub">If you’re having trouble with the button above, copy and
                                                     paste the URL below into your web browser.</p>
-                                                <p class="sub"><?= Url::to(['/user/user/complete-registration', 'token' => $model->passwordResetToken, 'email' => $model->email], true)?>
+                                                <p class="sub">
+<?= Url::to(
+    [
+        '/user/user/complete-registration',
+        'token' => $model->passwordResetToken,
+        'email' => $model->email
+    ],
+    true
+) ?>
                                                 </p>
                                             </td>
                                         </tr>

@@ -15,10 +15,38 @@ class Module extends \yii\base\Module implements BootstrapInterface
     public $controllerNamespace = 'app\modules\user\controllers';
 
     /**
+     * @var string $supportEmail - set in config/params. Required
+     */
+    public ?string $supportEmail = null;
+
+    /**
+     * @var string $supportEmailDisplayName - set in config/params. Required
+     */
+    public ?string $supportEmailDisplayName = null;
+
+    /**
+     * @var string $newUserEmailSubject - override in config/params. Optional
+     */
+    public string $newUserEmailSubject = 'Please finish setting up your account';
+
+    /**
+     * @var string $passwordRecoverySubject - override in config/params. Optional
+     */
+    public string $passwordRecoverySubject = 'Recover your lost password';
+
+    /**
      * @inheritdoc
      */
     public function init()
     {
+        if (!\Yii::$app->params['supportEmail']) {
+            throw new \yii\web\BadRequestHttpException('Please specify supportEmail in params');
+        }
+
+        if (!\Yii::$app->params['supportEmailDisplayName']) {
+            throw new \yii\web\BadRequestHttpException('Please specify supportEmailDisplayName in params');
+        }
+
         parent::init();
 
         // custom initialization code goes here

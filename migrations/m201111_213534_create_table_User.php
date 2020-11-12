@@ -36,6 +36,8 @@ class m201111_213534_create_table_User extends Migration
             'id',
             'CASCADE'
         );
+
+        echo "\n\nUse the command user/user/add to create a new user.\n\n";
     }
 
     /**

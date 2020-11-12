@@ -4,6 +4,7 @@ use yii\helpers\Url;
 
 /* @var $this \yii\web\View view component instance */
 /* @var $message \yii\mail\BaseMessage instance of newly created mail message */
+/* @todo understand and fix phpcs so it stops messing with the formatting of the mail directory */
 
 ?>
     <span class="preheader">Use this link to reset your password. The link is only valid for 24 hours.</span>
@@ -13,8 +14,8 @@ use yii\helpers\Url;
           <table class="email-content" width="100%" cellpadding="0" cellspacing="0">
             <tr>
               <td class="email-masthead">
-              		<img src="<?= $message->embed($logo); ?>" alt="Skyline Technology Solutions" align="center" hspace="30"><br><br>
-			       <?= Html::a('CMS', Url::home(true), ['class' => 'email-masthead_name']) ?>
+              		<img src="<?= $message->embed($logo); ?>" alt="<?= \Yii::$app->id ?>" align="center" hspace="30"><br><br>
+			        <?= Html::a('CMS', Url::home(true).'/cms', ['class' => 'email-masthead_name']) ?>
               </td>
             </tr>
             <!-- Email Body -->
