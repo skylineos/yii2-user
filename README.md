@@ -1,3 +1,6 @@
+This module is new and thrown together from a handful of places. It seems functional, but probably needs 
+a lot more eyes-on if it's going to have wide-spread adoption.
+
 ### Installation
 
 1. Clone this module to @app/module/User
