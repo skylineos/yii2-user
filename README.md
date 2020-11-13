@@ -72,6 +72,8 @@ a lot more eyes-on if it's going to have wide-spread adoption.
 ### Migrations
 
 `php yii migrate/up --migrationPath=@app/modules/user/migrations`
+`php yii migrate/down --migrationPath=@app/modules/user/migrations`
+
 
 ### Dependencies
 
