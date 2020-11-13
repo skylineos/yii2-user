@@ -51,8 +51,8 @@ class Module extends \yii\base\Module implements BootstrapInterface
             $this->supportEmailDisplayName = \Yii::$app->params['supportEmailDisplayName'];
         }
 
-        if (\Yii::$app->params['supportEmailDisplayName']) {
-            $this->newUserEmailSubject = \Yii::$app->params['supportEmailDisplayName'];
+        if (\Yii::$app->params['newUserEmailSubject']) {
+            $this->newUserEmailSubject = \Yii::$app->params['newUserEmailSubject'];
         }
 
         if (\Yii::$app->params['passwordRecoverySubject']) {

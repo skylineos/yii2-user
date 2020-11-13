@@ -36,14 +36,14 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      *
      * @var string
      */
-    public string $password;
+    public ?string $password = null;
 
     /**
      * There is no property for password of verifyPassword, only passwordHash.
      *
      * @var string
      */
-    public string $verifyPassword;
+    public ?string $verifyPassword = null;
 
     /**
      * @inheritdoc
@@ -86,7 +86,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             [['status'], 'integer'],
             [['authKey'], 'string', 'max' => 32],
             [['passwordResetToken', 'passwordHash'], 'string', 'max' => 255],
-            [['email', 'name', 'role'], 'string', 'max' => 100],
+            [['email', 'name',], 'string', 'max' => 100],
             [['email'], 'unique'],
             [['email'], 'email'],
             [['password'], 'trim'],
