@@ -41,10 +41,14 @@ class Module extends \yii\base\Module implements BootstrapInterface
     {
         if (!\Yii::$app->params['supportEmail']) {
             throw new \yii\web\BadRequestHttpException('Please specify supportEmail in params');
+        } else {
+            $this->supportEmail = \Yii::$app->params['supportEmail'];
         }
 
         if (!\Yii::$app->params['supportEmailDisplayName']) {
             throw new \yii\web\BadRequestHttpException('Please specify supportEmailDisplayName in params');
+        } else {
+            $this->supportEmailDisplayName = \Yii::$app->params['supportEmailDisplayName'];
         }
 
         parent::init();
