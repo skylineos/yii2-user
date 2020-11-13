@@ -33,6 +33,7 @@ class UserController extends Controller
         /**
          * In the case that this is the first user, the foriegn key will fail. No harm
          * in disabling integrity checks for this edge case
+         * @todo find a better way... honestly
          */
         \Yii::$app->db->createCommand()->checkIntegrity(false)->execute();
 
