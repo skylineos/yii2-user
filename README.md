@@ -36,6 +36,13 @@ a lot more eyes-on if it's going to have wide-spread adoption.
              * Optional settings
              */
 
+            // Where to redirect after logging in/handling auth sessions
+            'homeRedirect' => '/cms',
+            
+            // How long the password reset token should last (eg. today + x time)
+            // @see https://www.php.net/strtotime
+            'passwordResetTokenExp' => '+5 days',
+
             // If you want to override the default layout
             'layout' => '@app/.../views/layouts/<layout>' 
 

@@ -29,7 +29,6 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
     const STATUS_INACTIVE = 0;
     const STATUS_ACTIVE = 1;
-    const PASSWORD_RESET_TOKEN_EXPIRATION = 3600; // 1 hour
 
     /**
      * There is no property for password of verifyPassword, only passwordHash.
@@ -66,7 +65,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
                 'class' => BlameableBehavior::className(),
                 'createdByAttribute' => 'modifiedBy',
                 'updatedByAttribute' => 'modifiedBy',
-                'defaultValue' => 1,
+                'value' => 1,
             ],
         ];
     }
@@ -81,7 +80,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
          * need to be required by independent actions (eg. update).
          */
         return [
-            [['lastLogin', 'passwordHash', 'passwordResetTokenExp'], 'safe'],
+            [['lastLogin', 'passwordHash', 'passwordResetTokenExp',], 'safe'],
             [['name', 'email'], 'required'],
             [['status'], 'integer'],
             [['authKey'], 'string', 'max' => 32],
@@ -214,5 +213,25 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function getUsername() : string
     {
         return $this->email;
+    }
+
+    /**
+     * setResetToken = handles setting of the token/token exp on user create/reset password/etc
+     *
+     * @param boolean $tokenAccessible whether or not the token should be in the future - making the token accessible
+     * @return void
+     */
+    public function setResetToken(bool $tokenAccessible = false)
+    {
+        $security = \Yii::$app->getSecurity();
+        $this->passwordResetToken = $security->generateRandomString(255);
+
+        if ($tokenAccessible === true) {
+            $expires = strtotime(\Yii::$app->controller->module->passwordResetTokenExp);
+        } else {
+            $expires = strtotime('-1 day');
+        }
+
+        $this->passwordResetTokenExp = strftime('%F %T', (string) $expires);
     }
 }

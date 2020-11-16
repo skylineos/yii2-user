@@ -42,7 +42,7 @@ use yii\helpers\Url;
                                       <td>
 <?= Html::a(
     'Reset your password',
-    Url::to(['user/reset', 'token' => $token, 'email' => $email], true),
+    Url::to(['user/change-password', 'token' => $token, 'email' => $email], true),
     ['class' => 'button button--green', 'target' => '_blank']
 ) ?>
                                       </td>
@@ -63,7 +63,7 @@ use yii\helpers\Url;
                         <tr>
                           <td>
                             <p class="sub">If you’re having trouble with the button above, copy and paste the URL below into your web browser.</p>
-                            <p class="sub"><?= Url::to(['user/reset', 'token' => $token, 'email' => $email], true)?></p> 
+                            <p class="sub"><?= Url::to(['user/change-password', 'token' => $token, 'email' => $email], true)?></p> 
                           </td>
                         </tr>
                       </table>

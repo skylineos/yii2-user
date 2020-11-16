@@ -95,7 +95,7 @@ $this->title = 'Please Sign In';
         <?php $form = ActiveForm::begin([
             'id' => 'forgot-password-form',
             'enableClientValidation'=> true,
-            'action' => ['/user/user/request'],
+            'action' => ['/user/user/password-reset-request'],
             'options' => [
                 'class' => 'kt-form',
             ]

@@ -40,15 +40,6 @@ class UserSearch extends User
     }
 
     /**
-     * @inheritdoc
-     */
-    public function scenarios()
-    {
-        // bypass scenarios() implementation in the parent class
-        return Model::scenarios();
-    }
-
-    /**
      * Creates data provider instance with search query applied
      *
      * @param array $params
@@ -65,6 +56,9 @@ class UserSearch extends User
 
         $this->load($params);
 
+        /**
+         * If we cannot validate the model with the given params, return the base query (all records)
+         */
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');

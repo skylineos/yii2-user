@@ -2,15 +2,14 @@
 
 namespace app\modules\user\models\forms;
 
-use Yii;
-use yii\base\Model;
-use app\modules\user\models\User;
+use app\modules\user\models\forms\CommonFormModel;
+use app\modules\user\models\Email;
 
 /**
  * RequestPasswordReset is the model behind the password recovery reset form.
  *
  */
-class RequestPasswordReset extends Model
+class RequestPasswordReset extends CommonFormModel
 {
     public $email;
 
@@ -26,46 +25,29 @@ class RequestPasswordReset extends Model
     }
 
     /**
-     * Logs in a user using the provided username and password.
+     * sendPasswordRecoveryEmail Sends a password recovery email
      *
-     * @param string email the email to whom we need to send an email
+     * @param string emailAddress the email to whom we need to send an email
      * @return bool whether an email was sent
      */
-    public function sendPasswordRecoveryEmail($email = null, $token = null)
+    public function sendPasswordRecoveryEmail($emailAddress = null, $token = null)
     {
-        if ($email !== null && $token !== null) {
-            // Load the module so we can access necessary parameters
-            $userModule = \Yii::$app->getModule('user');
-
-            // TODO: build this with a proper template and content
-            $message = Yii::$app->mailer->compose('@app/modules/user/mail/password-recovery', [
+        if ($emailAddress !== null && $token !== null) {
+            $email = new Email();
+            $email->toEmail = $emailAddress;
+            $email->subject = \Yii::$app->getModule('user')->passwordRecoverySubject;
+            $email->template = '@app/modules/user/mail/password-recovery';
+            $email->params = [
                 'logo' => \Yii::getAlias('@app').'/web/static/media/logo.svg',
                 'token' => $token,
-                'email' => $email,
-                ])
-                ->setFrom([$userModule->supportEmail => $userModule->supportEmailDisplayName])
-                ->setTo($email)
-                ->setSubject($userModule->passwordRecoverySubject);
+                'email' => $emailAddress,
+            ];
 
-            $message->send();
-
-            return true;
+            if ($email->sendEmail()) {
+                return true;
+            }
         }
 
         return false;
-    }
-
-    /**
-     * Finds user by [[username]]
-     *
-     * @return User|null
-     */
-    public function getUser()
-    {
-        if ($this->_user === false) {
-            $this->_user = User::findByEmail($this->username);
-        }
-
-        return $this->_user;
     }
 }

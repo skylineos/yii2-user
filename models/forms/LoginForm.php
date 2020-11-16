@@ -3,7 +3,7 @@
 namespace app\modules\user\models\forms;
 
 use Yii;
-use yii\base\Model;
+use app\modules\user\models\forms\CommonFormModel;
 
 /**
  * LoginForm is the model behind the login form.
@@ -11,7 +11,7 @@ use yii\base\Model;
  * @property User|null $user This property is read-only.
  *
  */
-class LoginForm extends Model
+class LoginForm extends CommonFormModel
 {
     public $username;
     public $password;
@@ -63,19 +63,5 @@ class LoginForm extends Model
         }
 
         return false;
-    }
-
-    /**
-     * Finds user by [[username]]
-     *
-     * @return User|null
-     */
-    public function getUser()
-    {
-        if ($this->user === false) {
-            $this->user = \app\modules\user\models\User::findByEmail($this->username);
-        }
-
-        return $this->user;
     }
 }

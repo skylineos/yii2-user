@@ -25,7 +25,7 @@ class m201111_213534_create_table_User extends Migration
             'dateCreated' => $this->datetime()->notNull()->defaultExpression('CURRENT_TIMESTAMP'),
             'lastModified' => $this->datetime()->notNull()->defaultExpression('CURRENT_TIMESTAMP'),
             'modifiedBy' => $this->integer()->notNull(),
-            'passwordResetTokenExp' => $this->smallInteger()->defaultValue(User::PASSWORD_RESET_TOKEN_EXPIRATION),
+            'passwordResetTokenExp' => $this->datetime()->notNull()->defaultExpression('CURRENT_TIMESTAMP'),
         ]);
 
         $this->addForeignKey(

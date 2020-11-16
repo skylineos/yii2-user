@@ -3,7 +3,6 @@
 namespace app\modules\user\controllers;
 
 use Yii;
-use Aws\Ses\SesClient;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -11,6 +10,7 @@ use yii\filters\AccessControl;
 use app\modules\user\models\User;
 use app\modules\user\models\forms\LoginForm;
 use app\modules\user\models\search\UserSearch;
+use app\modules\user\models\Email;
 
 /**
  * UserController implements the CRUD  and authentication (login/logout/reset/etc) actions for User model.
@@ -45,8 +45,8 @@ class UserController extends Controller
                     [
                         'actions' => [
                             'login',
-                            'request',
-                            'reset',
+                            'password-reset-request',
+                            'change-password',
                         ],
                         'allow' => true,
                         'roles' => ['?'],
@@ -72,7 +72,7 @@ class UserController extends Controller
         $this->layout = self::LAYOUT_LOGIN;
 
         if (!Yii::$app->user->isGuest) {
-            return $this->redirect(['/cms']);
+            return $this->redirect([\Yii::$app->controller->module->homeRedirect]);
         }
 
         $model = new LoginForm();
@@ -83,7 +83,7 @@ class UserController extends Controller
         // Do not render the page with the user's previous password attempt. #security
         $model->password = '';
 
-        return $this->render('security/login', [
+        return $this->render('@app/modules/user/views/user/security/login', [
             'model' => $model,
             'forgotPasswordModel' => new \app\modules\user\models\forms\RequestPasswordReset(),
         ]);
@@ -127,33 +127,33 @@ class UserController extends Controller
         $model = new User();
 
         if ($model->load(Yii::$app->request->post())) {
+            // Load the module so we can access necessary parameters
+            $userModule = \Yii::$app->controller->module;
 
             /**
              * Create a random password
              */
             $security = \Yii::$app->getSecurity();
             $model->passwordHash = $security->generatePasswordHash($security->generateRandomString(16));
-            $model->passwordResetToken = $security->generateRandomString(255);
-            $model->passwordResetTokenExp = strftime('%F %T', strtotime('+5 day'));
-
+            $model->setResetToken(true);
 
             if ($model->save()) {
-                // Load the module so we can access necessary parameters
-                $userModule = \Yii::$app->getModule('user');
-
-                $message = Yii::$app->mailer->compose('@app/modules/user/mail/create-account-html', [
-                    'logo' => \Yii::getAlias('@app').'/web/static/media/logo.svg',
+                $email = new Email();
+                $email->toEmail = $model->email;
+                $email->subject = $userModule->newUserEmailSubject;
+                $email->template = '@app/modules/user/mail/create-account-html';
+                $email->params = [
+                    'logoSrc' => \Yii::getAlias('@app').'/web/static/media/logo.svg',
                     'model' => $model,
-                    ])
-                    ->setFrom([
-                        $userModule->supportEmail => $userModule->supportEmailDisplayName,
-                        ])
-                    ->setTo($model->email)
-                    ->setSubject($userModule->newUserEmailSubject);
+                ];
 
-                $message->send();
+                if ($email->sendEmail()) {
+                    \Yii::$app->session->setFlash('success', 'User Created');
+                } else {
+                    \Yii::$app->session->setFlash('warning', 'The user was created successfully, but the email could 
+                    not be sent to the user.');
+                }
 
-                \Yii::$app->session->setFlash('success', 'User Created');
                 return $this->redirect(['index']);
             }
         }
@@ -172,7 +172,7 @@ class UserController extends Controller
      */
     public function actionUpdate(int $id)
     {
-        $model = $om = $this->findModel($id);
+        $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post())) {
             if ($model->save()) {
@@ -195,9 +195,15 @@ class UserController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        $model->status = User::STATUS_INACTIVE;
 
-        \Yii::$app->session->setFlash('danger', 'User Deleted');
+        if ($model->save()) {
+            \Yii::$app->session->setFlash('danger', 'User Deleted');
+        } else {
+            \Yii::$app->session->setFlash('danger', 'Could not delete user, please contact support');
+        }
+
         return $this->redirect(['index']);
     }
 
@@ -208,7 +214,7 @@ class UserController extends Controller
      *
      * @return mixed
      */
-    public function actionRequest()
+    public function actionPasswordResetRequest()
     {
         $model = new \app\modules\user\models\forms\RequestPasswordReset();
 
@@ -217,20 +223,18 @@ class UserController extends Controller
                 ->where(['email' => Yii::$app->request->post('RequestPasswordReset')['email'] ])
                 ->one();
 
-            if (is_object($user) && isset($user->email)) {
-                $token = \Yii::$app->getSecurity()->generateRandomString(255);
-                $user->passwordResetToken = $token;
-                $user->passwordResetTokenExp = date('Y-m-d H:i:s');
+            if (is_object($user)) {
+                $user->setResetToken(true);
 
                 if ($user->save()) {
-                    $model->sendPasswordRecoveryEmail($user->email, $token);
+                    $model->sendPasswordRecoveryEmail($user->email, $user->passwordResetToken);
                     \Yii::$app->session->setFlash(
                         'recoverySent',
                         'An email has been sent to your email address with details regarding how you may recover
                          your password'
                     );
 
-                    return $this->redirect(['/cms']);
+                    return $this->redirect([\Yii::$app->controller->module->homeRedirect]);
                 }
             }
         }
@@ -260,7 +264,7 @@ class UserController extends Controller
      *
      * @return response
      */
-    public function actionReset()
+    public function actionChangePassword()
     {
         $this->layout = self::LAYOUT_LOGIN;
 
@@ -277,7 +281,7 @@ class UserController extends Controller
             if (is_object($user) && isset($user->id)) {
                 $user->passwordHash = \Yii::$app->getSecurity()->generatePasswordHash($model->password);
                 $user->verifyPassword = $user->passwordHash;
-                $user->passwordResetToken = \Yii::$app->getSecurity()->generateRandomString(50);
+                $user->setResetToken();
 
                 if ($user->save()) {
                     \Yii::$app->session->setFlash(
@@ -291,7 +295,7 @@ class UserController extends Controller
                     );
                 }
 
-                return $this->redirect('/cms');
+                return $this->redirect([\Yii::$app->controller->module->homeRedirect]);
             }
         }
 
@@ -305,13 +309,13 @@ class UserController extends Controller
                 'resetFailed',
                 'We were unable to reset your password. Please contact support.'
             );
-            return $this->redirect('/cms');
+            return $this->redirect([\Yii::$app->controller->module->homeRedirect]);
         }
 
         $model->email = $request->get('email');
         $model->token = $request->get('token');
 
-        return $this->render('recovery/reset', [
+        return $this->render('@app/modules/user/views/user/recovery/reset', [
             'model' => $model,
             'user' => $user,
         ]);
@@ -324,7 +328,7 @@ class UserController extends Controller
      * @return User the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel(int $id)
     {
         $model = User::findOne($id);
 

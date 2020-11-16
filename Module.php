@@ -25,6 +25,11 @@ class Module extends \yii\base\Module implements BootstrapInterface
     public ?string $supportEmailDisplayName = null;
 
     /**
+     * @var string $homeRedirect - where to redirect users after requests (eg /cms). Optional
+     */
+    public ?string $homeRedirect = '/cms';
+
+    /**
      * @var string $newUserEmailSubject - override in config/params. Optional
      */
     public string $newUserEmailSubject = 'Please finish setting up your account';
@@ -35,8 +40,14 @@ class Module extends \yii\base\Module implements BootstrapInterface
     public string $passwordRecoverySubject = 'Recover your lost password';
 
     /**
-     * @inheritdoc
+     * @var string $passwordResetTokenExp - how long password reset token should last. Optional
+     * @see https://www.php.net/strtotime
      */
+    public string $passwordResetTokenExp = '+5 days';
+
+    /**
+    * @inheritdoc
+    */
     public function init()
     {
         if (!\Yii::$app->params['supportEmail']) {

@@ -14,7 +14,7 @@ use yii\helpers\Url;
             <table class="email-content" width="100%" cellpadding="0" cellspacing="0">
                 <tr>
                     <td class="email-masthead">
-                        <img src="<?= \Yii::$app->params['logoSrc'] ?>" alt="Application" align="center" hspace="30">
+                        <img src="<?= $logoSrc ?>" alt="Application" align="center" hspace="30">
                         <br><br>
                         <?= Html::a(\Yii::$app->id, Url::home(true).'/cms', ['class' => 'email-masthead_name']) ?>
                     </td>
