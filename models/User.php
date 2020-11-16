@@ -146,7 +146,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      * @param string $email
      * @return static|null
      */
-    public static function findByEmail($email)
+    public static function findByEmail(string $email)
     {
         return User::findOne([
             'email' => $email,
@@ -157,13 +157,13 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     /**
      * Finds a user for password reset with given email/token (where token is not expired)
      *
-     * @param [type] $email
-     * @param [type] $token
+     * @param string $email
+     * @param string $token
      * @return static|null
      */
     public static function findByToken(string $email, string $token)
     {
-        $date = new \DateTime('-24 Hours', new \DateTimeZone('UTC'));
+        $date = new \DateTime();
         return User::find()
                 ->where(['email' => $email, 'passwordResetToken' => $token])
                 ->andWhere(['>=', 'passwordResetTokenExp', $date->format('Y-m-d H:i:s')])
