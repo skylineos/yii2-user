@@ -7,6 +7,12 @@
 use yii\widgets\ActiveForm;
 
 $this->title = 'Lost Password';
+
+/**
+ * DEPRECATED VIEW ***********************************
+ * Moved to login view for better user experience
+ * but standalone and can be used if necessary
+ */
 ?>
 
 <!-- BEGIN FORGOT PASSWORD FORM -->
