@@ -77,7 +77,7 @@ a lot more eyes-on if it's going to have wide-spread adoption.
 ```
 'supportEmail' => '<email address>',
 'supportEmailDisplayName' => 'Skyline Dude',
-'passwordRecoverySubject' => 'Forgot your password?'`,
+'passwordRecoverySubject' => 'Forgot your password?',
 'newUserEmailSubject' => 'Please finish setting up your account',
 ```
 
