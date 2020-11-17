@@ -43,6 +43,9 @@ a lot more eyes-on if it's going to have wide-spread adoption.
             // @see https://www.php.net/strtotime
             'passwordResetTokenExp' => '+5 days',
 
+            // How long the remember me should function
+            'rememberMeExpiration' => 3600*24*30,
+
             // If you want to override the default layout
             'layout' => '@app/.../views/layouts/<layout>' 
 

@@ -46,6 +46,11 @@ class Module extends \yii\base\Module implements BootstrapInterface
     public string $passwordResetTokenExp = '+5 days';
 
     /**
+     * @var int $rememberMeExpiration - how long should the rememberMe cookie/session stick around?
+     */
+    public int $rememberMeExpiration = 3600*24*30;
+
+    /**
     * @inheritdoc
     */
     public function init()
