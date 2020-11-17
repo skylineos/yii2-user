@@ -74,10 +74,19 @@ a lot more eyes-on if it's going to have wide-spread adoption.
 
 ### Params
 
-* `supportEmail => '<email address>',` _Required_
-* `supportEmailDisplayName => 'Skyline Dude',` _Required_
-* `passwordRecoverySubject => 'Forgot your password?'` _Optional_
-* `newUserEmailSubject => 'Please finish setting up your account'` _Optional_
+```
+'supportEmail' => '<email address>',
+'supportEmailDisplayName' => 'Skyline Dude',
+'passwordRecoverySubject' => 'Forgot your password?'`,
+'newUserEmailSubject' => 'Please finish setting up your account',
+```
+
+| Key                     | Type   | Description                               | Required |
+|-------------------------|--------|-------------------------------------------|----------|
+| supportEmail            | string | 'from' Email address                      | Yes      |
+| supportEmailDisplayName | string | 'from' Display name                       | Yes      |
+| passwordRecoverySubject | string | Email subject for password recovery email | No       |
+| newUserEmailSubject     | string | Email subject for new user email          | No       |
 
 ### Migrations
 
