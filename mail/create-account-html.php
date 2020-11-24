@@ -32,7 +32,7 @@ use yii\helpers\Url;
 <?= Html::a(
     'click here to finish the account creation process',
     Url::to([
-        '/user/user/complete-registration',
+        '/user/user/change-password',
         'token' => $model->passwordResetToken,
         'email' => $model->email
     ], true),
@@ -58,7 +58,7 @@ use yii\helpers\Url;
 <?= Html::a(
     'Click here to continue',
     Url::to([
-        '/user/user/complete-registration',
+        '/user/user/change-password',
         'token' => $model->passwordResetToken,
         'email' => $model->email
     ], true),
@@ -84,7 +84,7 @@ use yii\helpers\Url;
                                                 <p class="sub">
 <?= Url::to(
     [
-        '/user/user/complete-registration',
+        '/user/user/change-password',
         'token' => $model->passwordResetToken,
         'email' => $model->email
     ],
