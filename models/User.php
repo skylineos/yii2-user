@@ -30,9 +30,19 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     const STATUS_INACTIVE = 0;
     const STATUS_ACTIVE = 1;
 
-    public $password;
-    public $verifyPassword;
-    public $role;
+    /**
+     * There is no property for password of verifyPassword, only passwordHash.
+     *
+     * @var string
+     */
+    public ?string $password = null;
+
+    /**
+     * There is no property for password of verifyPassword, only passwordHash.
+     *
+     * @var string
+     */
+    public ?string $verifyPassword = null;
 
     /**
      * @inheritdoc
@@ -55,7 +65,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
                 'class' => BlameableBehavior::className(),
                 'createdByAttribute' => 'modifiedBy',
                 'updatedByAttribute' => 'modifiedBy',
-                'defaultValue' => 1,
+                'value' => 1,
             ],
         ];
     }
@@ -66,16 +76,16 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function rules()
     {
         /**
-         * Password is only required if it's a new record
+         * passwordHash is deemed safe as it will be explicitly set in the various methods and should never
+         * need to be required by independent actions (eg. update).
          */
         return [
-            [['lastLogin', 'passwordHash', 'passwordResetTokenExp'], 'safe'],
-            [['name', 'email', 'agencyId'], 'required'],
-            [['agencyId', 'status'], 'integer'],
-            [['adminTheme'], 'string', 'max' => 5],
+            [['lastLogin', 'passwordHash', 'passwordResetTokenExp',], 'safe'],
+            [['name', 'email'], 'required'],
+            [['status'], 'integer'],
             [['authKey'], 'string', 'max' => 32],
             [['passwordResetToken', 'passwordHash'], 'string', 'max' => 255],
-            [['email', 'name', 'role'], 'string', 'max' => 100],
+            [['email', 'name',], 'string', 'max' => 100],
             [['email'], 'unique'],
             [['email'], 'email'],
             [['password'], 'trim'],
@@ -91,17 +101,6 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
                 }
             ],
             ['password', 'compare', 'compareAttribute' => 'verifyPassword'],
-            [
-                [
-                    'agencyId'
-                ],
-                'exist',
-                'skipOnError' => true,
-                'targetClass' => Agency::className(),
-                'targetAttribute' => [
-                    'agencyId' => 'id'
-                ]
-            ],
         ];
     }
 
@@ -118,21 +117,11 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             'email' => 'Email',
             'passwordHash' => 'Password Hash',
             'name' => 'Name',
-            'agencyId' => 'Agency',
             'status' => 'Status',
             'dateCreated' => 'Date Created',
             'lastModified' => 'Last Modified',
             'modifiedBy' => 'Modified By',
-            'adminTheme' => 'Admin Theme',
         ];
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getAgency()
-    {
-        return $this->hasOne(Agency::className(), ['id' => 'agencyId']);
     }
 
     /**
@@ -157,14 +146,24 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      * @param string $email
      * @return static|null
      */
-    public static function findByEmail($email)
+    public static function findByEmail(string $email)
     {
-        return User::findOne(['email' => $email, 'status' => self::STATUS_ACTIVE]);
+        return User::findOne([
+            'email' => $email,
+            'status' => self::STATUS_ACTIVE
+            ]);
     }
 
-    public static function findByToken($email, $token)
+    /**
+     * Finds a user for password reset with given email/token (where token is not expired)
+     *
+     * @param string $email
+     * @param string $token
+     * @return static|null
+     */
+    public static function findByToken(string $email, string $token)
     {
-        $date = new \DateTime('-24 Hours', new \DateTimeZone('UTC'));
+        $date = new \DateTime();
         return User::find()
                 ->where(['email' => $email, 'passwordResetToken' => $token])
                 ->andWhere(['>=', 'passwordResetTokenExp', $date->format('Y-m-d H:i:s')])
@@ -207,12 +206,32 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     }
 
     /**
-     * Username is not a thing we use, but it is required in the base rbac system, so we've aliased it
+     * Alias for email as some packages require a 'user' property (rbac)
      *
      * @return string
      */
     public function getUsername() : string
     {
         return $this->email;
+    }
+
+    /**
+     * setResetToken = handles setting of the token/token exp on user create/reset password/etc
+     *
+     * @param boolean $tokenAccessible whether or not the token should be in the future - making the token accessible
+     * @return void
+     */
+    public function setResetToken(bool $tokenAccessible = false)
+    {
+        $security = \Yii::$app->getSecurity();
+        $this->passwordResetToken = $security->generateRandomString(255);
+
+        if ($tokenAccessible === true) {
+            $expires = strtotime(\Yii::$app->controller->module->passwordResetTokenExp);
+        } else {
+            $expires = strtotime('-1 day');
+        }
+
+        $this->passwordResetTokenExp = strftime('%F %T', (string) $expires);
     }
 }
