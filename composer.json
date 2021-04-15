@@ -1,0 +1,14 @@
+{
+    "name": "skyline/yii2-user",
+    "description": "Standalone user module with login, reset, mgmt, etc",
+    "type": "library",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Damien Kemens",
+            "email": "dkemens@skylinenet.net"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {}
+}
