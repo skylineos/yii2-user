@@ -17,8 +17,6 @@ use app\modules\user\models\Email;
  */
 class UserController extends Controller
 {
-    const LAYOUT_LOGIN = '@app/modules/user/views/layouts/login';
-
     /**
      * @inheritdoc
      * @see https://www.yiiframework.com/doc/guide/2.0/en/security-authorization
@@ -69,8 +67,6 @@ class UserController extends Controller
      */
     public function actionLogin()
     {
-        $this->layout = self::LAYOUT_LOGIN;
-
         if (!Yii::$app->user->isGuest) {
             return $this->redirect([\Yii::$app->controller->module->homeRedirect]);
         }
@@ -150,7 +146,7 @@ class UserController extends Controller
                 if ($email->sendEmail()) {
                     \Yii::$app->session->setFlash('success', 'User Created');
                 } else {
-                    \Yii::$app->session->setFlash('warning', 'The user was created successfully, but the email could 
+                    \Yii::$app->session->setFlash('warning', 'The user was created successfully, but the email could
                     not be sent to the user.');
                 }
 
