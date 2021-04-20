@@ -61,11 +61,13 @@ class Email extends Model
         }
     }
 
-    public function sendEmail() : bool
+    public function sendEmail(): bool
     {
         $message = \Yii::$app
             ->mailer
-            ->compose($this->template, $this->params)
+            ->compose($this->template, [
+                'model' => $this,
+            ])
             ->setFrom([
                 $this->fromEmail => $this->fromName,
                 ])

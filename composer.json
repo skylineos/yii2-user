@@ -7,8 +7,36 @@
         {
             "name": "Damien Kemens",
             "email": "dkemens@skylinenet.net"
+        },
+        {
+            "name": "Bill Weithers",
+            "email": "bweithers@skylinenet.net"
         }
     ],
     "minimum-stability": "stable",
-    "require": {}
+    "require": {},
+    "require-dev": {
+        "codeception/codeception": "*",
+        "yiisoft/yii2": "*",
+        "codeception/module-phpbrowser": "^1.0.0",
+        "codeception/module-asserts": "^1.0.0",
+        "codeception/assert-throws": "*",
+        "squizlabs/php_codesniffer": "*",
+        "phpunit/php-code-coverage": "*",
+        "yiisoft/yii2-swiftmailer": "*",
+        "codeception/module-yii2": "*",
+        "yiisoft/yii2-debug": "~2.1.0",
+        "yiisoft/yii2-gii": "~2.1.0",
+        "yiisoft/yii2-faker": "~2.0.0",
+        "codeception/verify": "~0.5.0 || ~1.1.0",
+        "codeception/specify": "~0.4.6",
+        "symfony/browser-kit": ">=2.7 <=4.2.4",
+        "codeception/module-filesystem": "^1.0.0"
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
+    ]
 }
