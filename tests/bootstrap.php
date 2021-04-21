@@ -4,4 +4,4 @@
 \Codeception\Util\Autoload::addNamespace('', 'vendor/yiisoft/yii2/base');
 \Codeception\Util\Autoload::addNamespace('', 'tests/fixtures');
 \Codeception\Util\Autoload::addNamespace('', 'tests/mocks');
-\Codeception\Util\Autoload::addNamespace('', 'migrations');
+\Codeception\Util\Autoload::addNamespace('', 'controllers');

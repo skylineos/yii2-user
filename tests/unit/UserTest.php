@@ -25,27 +25,11 @@ class UserTest extends \Codeception\Test\Unit
                 ],
                 [
                     'dbType' => 'string',
-                    'name' => 'authKey',
-                ],
-                [
-                    'dbType' => 'string',
                     'name' => 'passwordResetToken',
                 ],
                 [
                     'dbType' => 'string',
                     'name' => 'passwordResetTokenExp',
-                ],
-                [
-                    'dbType' => 'string',
-                    'name' => 'lastLogin',
-                ],
-                [
-                    'dbType' => 'string',
-                    'name' => 'email',
-                ],
-                [
-                    'dbType' => 'string',
-                    'name' => 'email',
                 ],
             ]
         ]));
