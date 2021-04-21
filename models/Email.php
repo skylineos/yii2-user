@@ -74,10 +74,6 @@ class Email extends Model
             ->setTo($this->toEmail)
             ->setSubject($this->subject);
 
-        if ($message->send()) {
-            return true;
-        }
-
-        return false;
+        return $message->send();
     }
 }
