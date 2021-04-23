@@ -19,6 +19,7 @@ before_script:
 - php -r "unlink('composer-setup.php');"
 - php composer.phar install
 - ls -lash ./vendor
+- ls -lash
 
 PSR-check:
   stage: check-standards
