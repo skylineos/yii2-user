@@ -14,7 +14,7 @@ Add a repository entry to the `compose.json` file:
 
 Add an entry into the `required` property of the `compose.json` file:
 ```
-    "skyline/yii/user": "[version]"
+    "skyline/yii.user": "[version]"
 ```
 Where [version] is the version of this extension.
 
@@ -57,7 +57,7 @@ In your configuration file (normally `config/web.php`) add the following entries
 
             // If you want to override the default layout
             // If you want to use the default layout within the module, set this
-            // to '@app/modules/user/views/layouts/login'
+            // to '@app/vendors/skyline/yii.user/user/views/layouts/login'
             'layout' => '@app/.../views/layouts/<layout>'
 
             /**
@@ -126,11 +126,11 @@ Add the following parameters to the `params` key of your configuration file:
 
 In order to ensure that your database is setup properly, you will need to run the migrations located in the extension.
 
-`php yii migrate/up --migrationPath=@app/modules/user/migrations`
+`php yii migrate/up --migrationPath=@app/vendors/skyline/yii.user/user/migrations`
 
 If something goes wrong with the migration, remove any lingering changes with this command:
 
-`php yii migrate/down --migrationPath=@app/modules/user/migrations`
+`php yii migrate/down --migrationPath=@app/vendors/skyline/yii.user/user/migrations`
 
 
 ## Dependencies
