@@ -15,11 +15,11 @@
     ],
     "minimum-stability": "stable",
     "require": {
-        "php": ">=7.4"
+        "php": ">=7.4",
+        "yiisoft/yii2": ">=2.0.41"
     },
     "require-dev": {
         "codeception/codeception": "*",
-        "yiisoft/yii2": "*",
         "codeception/module-phpbrowser": "^1.0.0",
         "codeception/module-asserts": "^1.0.0",
         "codeception/assert-throws": "*",
