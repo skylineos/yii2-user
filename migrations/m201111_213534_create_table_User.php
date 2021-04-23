@@ -1,4 +1,5 @@
 <?php
+namespace skyline\user\migrations;
 
 use yii\db\Migration;
 use app\modules\user\models\User;

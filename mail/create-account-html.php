@@ -1,4 +1,5 @@
 <?php
+
 use yii\helpers\Html;
 use yii\helpers\Url;
 
@@ -16,7 +17,7 @@ use yii\helpers\Url;
                     <td class="email-masthead">
                         <img src="<?= $logoSrc ?>" alt="Application" align="center" hspace="30">
                         <br><br>
-                        <?= Html::a(\Yii::$app->id, Url::home(true).'/cms', ['class' => 'email-masthead_name']) ?>
+                        <?= Html::a(\Yii::$app->id, Url::home(true) . '/cms', ['class' => 'email-masthead_name']) ?>
                     </td>
                 </tr>
                 <!-- Email Body -->
@@ -40,7 +41,7 @@ use yii\helpers\Url;
         'target' => '_blank'
     ]
 ) ?>.
-                                         
+
                                     </p>
                                     <!-- Action -->
                                     <table class="body-action" align="center" width="100%" cellpadding="0"

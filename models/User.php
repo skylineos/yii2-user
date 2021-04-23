@@ -210,7 +210,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      *
      * @return string
      */
-    public function getUsername() : string
+    public function getUsername(): string
     {
         return $this->email;
     }
@@ -226,11 +226,11 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         $security = \Yii::$app->getSecurity();
         $this->passwordResetToken = $security->generateRandomString(255);
 
-        if ($tokenAccessible === true) {
-            $expires = strtotime(\Yii::$app->controller->module->passwordResetTokenExp);
-        } else {
-            $expires = strtotime('-1 day');
-        }
+        $expires = strtotime(
+            $tokenAccessible
+                ? \Yii::$app->controller->module->passwordResetTokenExp
+                : '-1 day'
+        );
 
         $this->passwordResetTokenExp = strftime('%F %T', (string) $expires);
     }

@@ -1,0 +1,47 @@
+image: devilbox/php-fpm:7.4-mods
+
+variables:
+  CHECK_FILES: .
+  CHECK_EXCLUDE_DIRS: ./vendor/*,*/tests/*,*/migrations/*,*/views/*
+  CHECK_STANDARDS: PSR12
+
+cache:
+  paths:
+  - vendor/
+
+stages:
+- check-standards
+- tests
+
+before_script:
+- php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+- php composer-setup.php
+- php -r "unlink('composer-setup.php');"
+- php composer.phar install
+
+PSR-check:
+  stage: check-standards
+  script:
+  - ./vendor/bin/phpcs
+      --standard=$CHECK_STANDARDS
+      --ignore=$CHECK_EXCLUDE_DIRS
+      --error-severity=1
+      --warning-severity=8
+      --extensions=php $CHECK_FILES
+
+unit-tests:
+  stage: tests
+  script:
+    - ./vendor/bin/codecept run unit
+
+##These don't actually exist yet
+# api-tests:
+#   stage: tests
+#   script:
+#   - ./vendor/bin/codecept run api
+
+##These don't actually exist yet
+# acceptance-tests:
+#   stage: tests
+#   script:
+#   - ./vendor/bin/codecept run acceptance

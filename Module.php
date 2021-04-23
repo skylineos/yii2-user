@@ -48,7 +48,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
     /**
      * @var int $rememberMeExpiration - how long should the rememberMe cookie/session stick around?
      */
-    public int $rememberMeExpiration = 3600*24*30;
+    public int $rememberMeExpiration = 3600 * 24 * 30;
 
     /**
     * @inheritdoc
