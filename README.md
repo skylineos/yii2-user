@@ -14,7 +14,7 @@ a lot more eyes-on if it's going to have wide-spread adoption.
     'components' => [
         // ... other components ...
         'user' => [
-            'identityClass' => 'app\modules\user\models\User',
+            'identityClass' => 'skyline\yii\user\models\User',
             'enableAutoLogin' => true,
         ],
     ]
@@ -29,7 +29,7 @@ a lot more eyes-on if it's going to have wide-spread adoption.
         .// ... other modules ...
         'user' => [
             // Required Parameters
-            'class' => 'app\modules\user\Module',
+            'class' => 'skyline\yii\user\Module',
             'defaultRoute' => 'UserController',
 
             /**
@@ -69,7 +69,7 @@ a lot more eyes-on if it's going to have wide-spread adoption.
     'modules' => [
         // ... other modules ...
         'user' => [
-            'class' => 'app\modules\user\Module',
+            'class' => 'skyline\yii\user\Module',
         ],
     ],
     ```

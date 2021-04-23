@@ -1,9 +1,9 @@
 <?php
 
-namespace app\modules\user\models\forms;
+namespace skyline\yii\user\models\forms;
 
-use app\modules\user\models\forms\CommonFormModel;
-use app\modules\user\models\Email;
+use skyline\yii\user\models\forms\CommonFormModel;
+use skyline\yii\user\models\Email;
 
 /**
  * RequestPasswordReset is the model behind the password recovery reset form.

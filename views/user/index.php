@@ -6,7 +6,7 @@ use app\modules\metronic\widgets\Portlet;
 use app\modules\metronic\widgets\Badge;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\modules\user\models\search\UserSearch */
+/* @var $searchModel skyline\yii\user\models\search\UserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Users';
@@ -21,7 +21,7 @@ $this->params['pageOptions']['links'] = ['create'];
     'titleIcon' => '<i class="fal fa-users"></i>'
 ]); ?>
 
-    <?php Pjax::begin(); ?>    
+    <?php Pjax::begin(); ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,

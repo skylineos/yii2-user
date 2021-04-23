@@ -12,7 +12,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
     /**
      * @inheritdoc
      */
-    public $controllerNamespace = 'app\modules\user\controllers';
+    public $controllerNamespace = 'skyline\yii\user\controllers';
 
     /**
      * @var string $supportEmail - set in config/params. Required
@@ -87,7 +87,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
     public function bootstrap($app)
     {
         if ($app instanceof \yii\console\Application) {
-            $this->controllerNamespace = 'app\modules\user\commands';
+            $this->controllerNamespace = 'skyline\yii\user\commands';
         }
     }
 }

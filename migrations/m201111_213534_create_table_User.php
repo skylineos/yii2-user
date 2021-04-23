@@ -2,7 +2,7 @@
 namespace skyline\user\migrations;
 
 use yii\db\Migration;
-use app\modules\user\models\User;
+use skyline\yii\user\models\User;
 
 /**
  * Class m201111_213534_create_table_User

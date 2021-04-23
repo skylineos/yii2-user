@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\user\models;
+namespace skyline\yii\user\models;
 
 use Yii;
 use yii\db\Expression;
