@@ -3,7 +3,7 @@ image: devilbox/php-fpm:7.4-mods
 variables:
   CHECK_FILES: .
   CHECK_EXCLUDE_DIRS: ./vendor/*,*/tests/*,*/migrations/*,*/views/*
-  CHECK_STANDARDS: PSR1,PSR2
+  CHECK_STANDARDS: PSR12
 
 cache:
   paths:
@@ -18,8 +18,6 @@ before_script:
 - php composer-setup.php
 - php -r "unlink('composer-setup.php');"
 - php composer.phar install
-- ls -lash ./vendor
-- ls -lash
 
 PSR-check:
   stage: check-standards

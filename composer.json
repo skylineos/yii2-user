@@ -14,7 +14,9 @@
         }
     ],
     "minimum-stability": "stable",
-    "require": {},
+    "require": {
+        "php": ">=7.4"
+    },
     "require-dev": {
         "codeception/codeception": "*",
         "yiisoft/yii2": "*",

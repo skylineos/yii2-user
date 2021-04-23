@@ -47,7 +47,7 @@ class Mocker extends Component
      *
      * @returns *
      */
-    private function callOriginalObjectFunction(string $function, array $args, $object = null)
+    private function callOriginalObjectFunction(string $function, array $args, ?object $object)
     {
         if (empty($object)) {
             $object = $this->metadata->originalObject;
@@ -63,7 +63,7 @@ class Mocker extends Component
             }
 
             if (\array_key_exists('class', $mock)) {
-                if ($mock['class'] == __CLASS__) {
+                if ($mock['class'] === __CLASS__) {
                     $newMock = new Mocker();
                     $newMock->originalClass = $mock['originalClass'];
                     $newMock->originalClassArgs = $mock['originalClassArgs'] ?? null;
@@ -98,17 +98,17 @@ class Mocker extends Component
 
     public function __set($name, $value)
     {
-        if ($name == 'mocks') {
+        if ($name === 'mocks') {
             $this->metadata->$name = $value;
             return $this->parseMocks($value);
         }
 
-        if ($name == 'originalClass') {
+        if ($name === 'originalClass') {
             $this->metadata->originalObject = new $value();
             return $this->metadata->$name = $value;
         }
 
-        if ($name == 'originalClassArgs') {
+        if ($name === 'originalClassArgs') {
             if (!is_array($value)) {
                 return;
             }
