@@ -17,8 +17,7 @@ before_script:
 - php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
 - php composer-setup.php
 - php -r "unlink('composer-setup.php');"
-- php composer.phar install --no-suggest --prefer-dist
-- composer update
+- php composer.phar install
 
 PSR-check:
   stage: check-standards
