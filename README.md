@@ -135,4 +135,4 @@ If something goes wrong with the migration, remove any lingering changes with th
 
 ## Dependencies
 - `skyline\yii\metronic: >=1.0.0` (accessed with the `git@gitlab.skyts.io:csg/yii/yii2.module.metronic.git` repository entry)
-- `aws/aws-sdk-php: *`, for ??
+- `aws/aws-sdk-php: *`, for mail (deprecated for posix)
