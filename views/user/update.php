@@ -1,7 +1,7 @@
 <?php
 
 /* @var $this yii\web\View */
-/* @var $model app\modules\user\models\User */
+/* @var $model skyline\yii\user\models\User */
 
 $this->title = 'Update User: ' . $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
@@ -16,8 +16,8 @@ $this->params['pageOptions'] = [
 
 <div class="portlet light">
     <div class="portlet-body">
-		<?= $this->render('_form', [
+        <?= $this->render('_form', [
             'model' => $model,
         ]) ?>
-	</div>
+    </div>
 </div>

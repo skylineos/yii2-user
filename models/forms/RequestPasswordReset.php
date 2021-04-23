@@ -1,9 +1,9 @@
 <?php
 
-namespace app\modules\user\models\forms;
+namespace skyline\yii\user\models\forms;
 
-use app\modules\user\models\forms\CommonFormModel;
-use app\modules\user\models\Email;
+use skyline\yii\user\models\forms\CommonFormModel;
+use skyline\yii\user\models\Email;
 
 /**
  * RequestPasswordReset is the model behind the password recovery reset form.
@@ -36,7 +36,7 @@ class RequestPasswordReset extends CommonFormModel
             $email = new Email();
             $email->toEmail = $emailAddress;
             $email->subject = \Yii::$app->getModule('user')->passwordRecoverySubject;
-            $email->template = '@app/modules/user/mail/password-recovery';
+            $email->template = '@vendor/skyline/yii.user/mail/password-recovery';
             $email->params = [
                 'logo' => \Yii::getAlias('@app') . '/web/static/media/logo.svg',
                 'token' => $token,

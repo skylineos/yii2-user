@@ -1,35 +1,44 @@
-This module is new and thrown together from a handful of places. It seems functional, but probably needs
-a lot more eyes-on if it's going to have wide-spread adoption.
+# Skyilne Yii User Extension
 
-### Installation
+An extension for the Yii framework to boilerplate the creation, update, viewing, and removal of authentication users.
 
-1. Clone this module to @app/module/User (@todo git submodule?)
-2. Create the User table
-    * **In docker (development):** `docker-compose exec yii2 php yii migrate/up --migrationPath=@app/modules/user/migrations`
-    * **Production:** php yii migrate/up --migrationPath=@app/modules/user/migrations`
-3. Configure params in `config/params.php` (see params section below)
-4. Tell yii to use this module for user management
-    1. edit `config/web.php` ,find and change (or add) the `user` block in `components` as follows
-    ```
-    'components' => [
+## Installation
+
+Add a repository entry to the `compose.json` file:
+```
+{
+    "type": "vcs",
+    "url": "git@gitlab.skyts.io:csg/yii/yii2-user.git"
+}
+```
+
+Add an entry into the `required` property of the `compose.json` file:
+```
+    "skyline/yii.user": "[version]"
+```
+Where [version] is the version of this extension.
+
+## Yii compatibility
+| Extension Version | Yii Version |
+| ----------------- | ----------- |
+| 1.0.0 | yii2 >= 2.0.41 |
+
+## Configure
+
+In your configuration file (normally `config/web.php`) add the following entries:
+```
+    components' => [
         // ... other components ...
         'user' => [
-            'identityClass' => 'app\modules\user\models\User',
+            'identityClass' => 'skyline\yii\user\models\User',
             'enableAutoLogin' => true,
         ],
-    ]
-    ```
-5. Add this module to the bootstrap for easy routing/reference
-    1. edit `config/web.php`, find the `modules` block (or add it if it doesn't exist) and add the following:
-    ```
-    'components' => [
-        ...
     ],
     'modules' => [
-        .// ... other modules ...
+        // ... other modules ...
         'user' => [
             // Required Parameters
-            'class' => 'app\modules\user\Module',
+            'class' => 'skyline\yii\user\Module',
             'defaultRoute' => 'UserController',
 
             /**
@@ -44,11 +53,11 @@ a lot more eyes-on if it's going to have wide-spread adoption.
             'passwordResetTokenExp' => '+5 days',
 
             // How long the remember me should function
-            'rememberMeExpiration' => 3600*24*30,
+            'rememberMeExpiration' => 3600 * 24 * 30,
 
             // If you want to override the default layout
             // If you want to use the default layout within the module, set this
-            // to '@app/modules/user/views/layouts/login'
+            // to '@vendor/skyline/yii.user/views/layouts/login'
             'layout' => '@app/.../views/layouts/<layout>'
 
             /**
@@ -59,9 +68,31 @@ a lot more eyes-on if it's going to have wide-spread adoption.
             'viewPath' => '@app/.../views/'
         ],
     ]
-    ```
-6. Edit `config/console.php` and add the routes for this module's commands (if you would like to use them)
-    ```
+```
+
+Also add a `route` rule to point to the User views / controllers:
+```
+    "components" => [...],
+    "modules" => [
+        // ... other modules ...
+        'urlManager' => [
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
+            'rules' => [
+                '/cms/login' => '/user/user/login',
+                '/cms/' => '/cms/index',
+                '/cms/users/<action>' => '/user/user/<action>',
+                '/cms/users/' => '/user/user',
+                '/' => '/',
+                '<slug:.*>' => '/site/render'
+            ],
+        ],
+        // ... other modules ...
+    ]
+```
+
+In your `config/console.php` add the routes for this module's commands (if you would like to use them)
+```
     'bootstrap' => [
         // ... other bootstrap components ...
         'user'
@@ -69,13 +100,14 @@ a lot more eyes-on if it's going to have wide-spread adoption.
     'modules' => [
         // ... other modules ...
         'user' => [
-            'class' => 'app\modules\user\Module',
+            'class' => 'skyline\yii\user\Module',
         ],
     ],
-    ```
+```
 
 ### Params
 
+Add the following parameters to the `params` key of your configuration file:
 ```
 'supportEmail' => '<email address>',
 'supportEmailDisplayName' => 'Skyline Dude',
@@ -90,16 +122,17 @@ a lot more eyes-on if it's going to have wide-spread adoption.
 | passwordRecoverySubject | string | Email subject for password recovery email | No       |
 | newUserEmailSubject     | string | Email subject for new user email          | No       |
 
-### Migrations
+## Migrations
 
-`php yii migrate/up --migrationPath=@app/modules/user/migrations`
-`php yii migrate/down --migrationPath=@app/modules/user/migrations`
+In order to ensure that your database is setup properly, you will need to run the migrations located in the extension.
+
+`php yii migrate/up --migrationPath=@vendor/skyline/yii.user/migrations`
+
+If something goes wrong with the migration, remove any lingering changes with this command:
+
+`php yii migrate/down --migrationPath=@vendor/skyline/yii.user/migrations`
 
 
-### Dependencies
-
-The following are required for this module to work
-
-* `composer require aws/aws-sdk-php`
-    * SES configured @ AWS
-* `https://gitlab.skyts.io/csg/yii2.module.metronic`
+## Dependencies
+- `skyline\yii\metronic: >=1.0.0` (accessed with the `git@gitlab.skyts.io:csg/yii/yii2.module.metronic.git` repository entry)
+- `aws/aws-sdk-php: *`, for ??

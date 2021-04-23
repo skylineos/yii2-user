@@ -1,16 +1,16 @@
 <?php
 
-namespace app\modules\user\controllers;
+namespace skyline\yii\user\controllers;
 
 use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use app\modules\user\models\User;
-use app\modules\user\models\forms\LoginForm;
-use app\modules\user\models\search\UserSearch;
-use app\modules\user\models\Email;
+use skyline\yii\user\models\User;
+use skyline\yii\user\models\forms\LoginForm;
+use skyline\yii\user\models\search\UserSearch;
+use skyline\yii\user\models\Email;
 
 /**
  * UserController implements the CRUD  and authentication (login/logout/reset/etc) actions for User model.
@@ -79,9 +79,9 @@ class UserController extends Controller
         // Do not render the page with the user's previous password attempt. #security
         $model->password = '';
 
-        return $this->render('@app/modules/user/views/user/security/login', [
+        return $this->render('@vendor/skyline/yii.user/views/user/security/login', [
             'model' => $model,
-            'forgotPasswordModel' => new \app\modules\user\models\forms\RequestPasswordReset(),
+            'forgotPasswordModel' => new \skyline\yii\user\models\forms\RequestPasswordReset(),
         ]);
     }
 
@@ -137,7 +137,7 @@ class UserController extends Controller
                 $email = new Email();
                 $email->toEmail = $model->email;
                 $email->subject = $userModule->newUserEmailSubject;
-                $email->template = '@app/modules/user/mail/create-account-html';
+                $email->template = '@vendor/skyline/yii.user/mail/create-account-html';
                 $email->params = [
                     'logoSrc' => \Yii::getAlias('@app') . '/web/static/media/logo.svg',
                     'model' => $model,
@@ -212,7 +212,7 @@ class UserController extends Controller
      */
     public function actionPasswordResetRequest()
     {
-        $model = new \app\modules\user\models\forms\RequestPasswordReset();
+        $model = new \skyline\yii\user\models\forms\RequestPasswordReset();
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $user = User::find()
@@ -254,9 +254,9 @@ class UserController extends Controller
      *
      * This renders the 'reset-password' form and handles the subsequent post
      *
-     * To complete the form, post must validate according to \app\modules\user\models\forms\ResetPassword()
+     * To complete the form, post must validate according to \skyline\yii\user\models\forms\ResetPassword()
      * To start the process at all, get['email'] and get['token'] must be procided and a user matching that
-     * pair must be found (the token is also compared for age @see app\modules\user\models\User::passwordResetTokenExp)
+     * pair must be found (the token is also compared for age @see skyline\yii\user\models\User::passwordResetTokenExp)
      *
      * @return response
      */
@@ -266,7 +266,7 @@ class UserController extends Controller
 
         $request = \Yii::$app->request;
 
-        $model = new \app\modules\user\models\forms\ResetPassword();
+        $model = new \skyline\yii\user\models\forms\ResetPassword();
 
         /**
          * Handle the request after the password is given and the form is submitted
@@ -311,7 +311,7 @@ class UserController extends Controller
         $model->email = $request->get('email');
         $model->token = $request->get('token');
 
-        return $this->render('@app/modules/user/views/user/recovery/reset', [
+        return $this->render('@vendor/skyline/yii.user/views/user/recovery/reset', [
             'model' => $model,
             'user' => $user,
         ]);

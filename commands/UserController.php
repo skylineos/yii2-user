@@ -1,11 +1,11 @@
 <?php
 
-namespace app\modules\user\commands;
+namespace skyline\yii\user\commands;
 
 use yii\console\Controller;
 use yii\console\ExitCode;
 use yii\validators\EmailValidator;
-use app\modules\user\models\User;
+use skyline\yii\user\models\User;
 
 /**
  * Command line helpers to generate or delete users. These are most useful when setting up a new deployment,

@@ -1,9 +1,9 @@
 <?php
 
-namespace app\modules\user\models\forms;
+namespace skyline\yii\user\models\forms;
 
 use Yii;
-use app\modules\user\models\forms\CommonFormModel;
+use skyline\yii\user\models\forms\CommonFormModel;
 
 /**
  * LoginForm is the model behind the login form.

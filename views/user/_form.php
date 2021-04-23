@@ -6,7 +6,7 @@ use app\modules\metronic\widgets\Portlet;
 use yii\rbac\Item;
 
 /* @var $this yii\web\View */
-/* @var $model app\modules\user\models\User */
+/* @var $model skyline\yii\user\models\User */
 /* @var $form yii\widgets\ActiveForm */
 
 $form = ActiveForm::begin([
@@ -31,7 +31,7 @@ Portlet::begin([
 ]);
 
 ?>
-                    
+
     <div class="form-group row">
         <div class="col">
             <?= $form->field($model, 'name')->textInput(['maxlength' => true, 'placeholder' => 'John Doe']) ?>
@@ -50,7 +50,7 @@ Portlet::begin([
     <?php if ($model->isNewRecord) { ?>
     <div class="alert alert-outline-success" role="alert">
         <div class="alert-icon"><i class="fas fa-exclamation-circle"></i></div>
-        <div class="alert-text">An email containing instructions for completing the account registration will be sent 
+        <div class="alert-text">An email containing instructions for completing the account registration will be sent
             to the user when you click 'Create'</div>
     </div>
     <?php } ?>
