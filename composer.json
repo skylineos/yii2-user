@@ -1,5 +1,5 @@
 {
-    "name": "skyline/yii/user",
+    "name": "skyline/yii.user",
     "description": "Standalone user module with login, reset, mgmt, etc",
     "type": "library",
     "license": "Apache-2.0",
