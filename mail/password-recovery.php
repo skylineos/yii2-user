@@ -1,4 +1,5 @@
 <?php
+
 use yii\helpers\Html;
 use yii\helpers\Url;
 
@@ -14,8 +15,8 @@ use yii\helpers\Url;
           <table class="email-content" width="100%" cellpadding="0" cellspacing="0">
             <tr>
               <td class="email-masthead">
-              		<img src="<?= $message->embed($logo); ?>" alt="<?= \Yii::$app->id ?>" align="center" hspace="30"><br><br>
-			        <?= Html::a('CMS', Url::home(true).'/cms', ['class' => 'email-masthead_name']) ?>
+                <img src="<?=$message->embed($logo);?>" alt="<?=\Yii::$app->id?>" align="center" hspace="30"><br><br>
+                <?=Html::a('CMS', Url::home(true) . '/cms', ['class' => 'email-masthead_name'])?>
               </td>
             </tr>
             <!-- Email Body -->
@@ -26,7 +27,7 @@ use yii\helpers\Url;
                   <tr>
                     <td class="content-cell">
                       <h1>Hi,</h1>
-                      <p>You recently requested to reset your password for the CMS. Use the button below to reset it. 
+                      <p>You recently requested to reset your password for the CMS. Use the button below to reset it.
                           <strong>This password reset is only valid for the next 24 hours.</strong></p>
                       <!-- Action -->
                       <table class="body-action" align="center" width="100%" cellpadding="0" cellspacing="0">
@@ -40,11 +41,11 @@ use yii\helpers\Url;
                                   <table border="0" cellspacing="0" cellpadding="0">
                                     <tr>
                                       <td>
-<?= Html::a(
+<?=Html::a(
     'Reset your password',
     Url::to(['user/change-password', 'token' => $token, 'email' => $email], true),
     ['class' => 'button button--green', 'target' => '_blank']
-) ?>
+)?>
                                       </td>
                                     </tr>
                                   </table>
@@ -63,7 +64,7 @@ use yii\helpers\Url;
                         <tr>
                           <td>
                             <p class="sub">If you’re having trouble with the button above, copy and paste the URL below into your web browser.</p>
-                            <p class="sub"><?= Url::to(['user/change-password', 'token' => $token, 'email' => $email], true)?></p> 
+                            <p class="sub"><?=Url::to(['user/change-password', 'token' => $token, 'email' => $email], true)?></p>
                           </td>
                         </tr>
                       </table>
