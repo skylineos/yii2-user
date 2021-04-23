@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\user;
+namespace skyline\yii\user;
 
 use yii\base\BootstrapInterface;
 
