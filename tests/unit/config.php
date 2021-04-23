@@ -2,6 +2,7 @@
 
 use Codeception\Stub\Expected;
 use yii\web\Application;
+use yii\db\ColumnSchema;
 
 $mailer = null;
 return [
@@ -9,15 +10,44 @@ return [
     'basePath' => '/',
     'aliases' => [
         '@mail' => __DIR__ . '/../../mail',
-        '@sqlite' => __DIR__ . '../data'
     ],
     'components' => [
         'db' => [
-            'class' => 'yii\db\Connection',
-            'dsn' => 'sqlite:' . __DIR__ . '/data/db.sqlite',
-            'username' => '',
-            'password' => '',
-            'charset' => 'utf8',
+            'class' => 'skyline\tests\mocks\Mocker',
+            'originalClass' => 'yii\db\Connection',
+            'mocks' => [
+                'open' => '',
+                'close' => '',
+                'getSchema' => [
+                    'class' => 'skyline\tests\mocks\Mocker',
+                    'originalClass' => 'yii\db\mysql\Schema',
+                    'mocks' => [
+                        'getTableSchema' => [
+                            'class' => 'skyline\tests\mocks\Mocker',
+                            'originalClass' => 'yii\db\TableSchema',
+                            'originalClassArgs' => [
+                                'columns' => [
+                                    'id' => new ColumnSchema(
+                                        [
+                                            'dbType' => 'int',
+                                            'isPrimaryKey' => true,
+                                            'name' => 'id'
+                                        ]
+                                    ),
+                                    'passwordResetToken' => new ColumnSchema([
+                                        'dbType' => 'string',
+                                        'name' => 'passwordResetToken',
+                                    ]),
+                                    'passwordResetTokenExp' => new ColumnSchema([
+                                        'dbType' => 'string',
+                                        'name' => 'passwordResetTokenExp',
+                                    ]),
+                                ],
+                            ],
+                        ]
+                    ]
+                ],
+            ],
         ],
     ],
     'params' => [
