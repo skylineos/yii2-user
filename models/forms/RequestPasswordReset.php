@@ -38,7 +38,7 @@ class RequestPasswordReset extends CommonFormModel
             $email->subject = \Yii::$app->getModule('user')->passwordRecoverySubject;
             $email->template = '@app/modules/user/mail/password-recovery';
             $email->params = [
-                'logo' => \Yii::getAlias('@app').'/web/static/media/logo.svg',
+                'logo' => \Yii::getAlias('@app') . '/web/static/media/logo.svg',
                 'token' => $token,
                 'email' => $emailAddress,
             ];

@@ -139,7 +139,7 @@ class UserController extends Controller
                 $email->subject = $userModule->newUserEmailSubject;
                 $email->template = '@app/modules/user/mail/create-account-html';
                 $email->params = [
-                    'logoSrc' => \Yii::getAlias('@app').'/web/static/media/logo.svg',
+                    'logoSrc' => \Yii::getAlias('@app') . '/web/static/media/logo.svg',
                     'model' => $model,
                 ];
 

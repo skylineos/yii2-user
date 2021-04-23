@@ -21,7 +21,7 @@ class UserController extends Controller
      * @param string $email The email address of the new user account
      * @return integer constant of yii\console\ExitCode
      */
-    public function actionAdd(string $email = null) : int
+    public function actionAdd(string $email = null): int
     {
         $emailValidator = new EmailValidator();
 
@@ -37,7 +37,7 @@ class UserController extends Controller
          */
         \Yii::$app->db->createCommand()->checkIntegrity(false)->execute();
 
-        $model = new User;
+        $model = new User();
         $model->email = $model->name = $email;
 
         /**
@@ -49,7 +49,7 @@ class UserController extends Controller
 
         if ($model->save()) {
             \Yii::$app->db->createCommand()->checkIntegrity(true)->execute();
-            $msg = "The user account has been created with a random password. You should direct the user to 
+            $msg = "The user account has been created with a random password. You should direct the user to
             'Forgot Password' in order to finish creating their account.\n";
             echo $msg;
             return ExitCode::OK;
@@ -65,7 +65,7 @@ class UserController extends Controller
      * @param string $email The email address of the user to be deleted
      * @return integer constant of yii\console\ExitCode
      */
-    public function actionDelete(string $email = null) : int
+    public function actionDelete(string $email = null): int
     {
         $emailValidator = new EmailValidator();
 
