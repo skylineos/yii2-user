@@ -262,8 +262,6 @@ class UserController extends Controller
      */
     public function actionChangePassword()
     {
-        $this->layout = self::LAYOUT_LOGIN;
-
         $request = \Yii::$app->request;
 
         $model = new \app\modules\user\models\forms\ResetPassword();
