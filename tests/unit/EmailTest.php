@@ -1,6 +1,6 @@
 <?php
 
-use app\modules\user\models\Email;
+use skyline\yii\user\models\Email;
 use yii\swiftmailer\Mailer;
 use yii\swiftmailer\Message;
 use Codeception\Util\Stub;

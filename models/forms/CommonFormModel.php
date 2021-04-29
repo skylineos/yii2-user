@@ -1,9 +1,9 @@
 <?php
 
-namespace app\modules\user\models\forms;
+namespace skyline\yii\user\models\forms;
 
 use yii\base\Model;
-use app\modules\user\models\User;
+use skyline\yii\user\models\User;
 
 class CommonFormModel extends Model
 {

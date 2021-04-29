@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\user\models;
+namespace skyline\yii\user\models;
 
 use yii\base\Model;
 

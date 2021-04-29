@@ -1,7 +1,7 @@
 <?php
 
 /* @var $this yii\web\View */
-/* @var $model app\modules\user\models\User */
+/* @var $model skyline\yii\user\models\User */
 
 $this->title = 'Update User: ' . $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];

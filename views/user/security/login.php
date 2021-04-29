@@ -4,7 +4,7 @@
 /* @var $form yii\widgets\ActiveForm */
 /* @var $model app\models\LoginForm */
 
-use app\modules\metronic\widgets\ActiveForm;
+use skyline\yii\metronic\widgets\ActiveForm;
 
 $this->title = 'Please Sign In';
 ?>

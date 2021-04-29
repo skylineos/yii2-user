@@ -2,7 +2,7 @@
 
 use Codeception\Util\Stub;
 use yii\db\Connection;
-use app\modules\user\models\User;
+use skyline\yii\user\models\User;
 use app\tests\fixtures\UserFixture;
 use skyline\user\tests\mocks\DBMock;
 use skyline\tests\mocks\Mocker;

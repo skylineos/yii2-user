@@ -1,14 +1,14 @@
 <?php
 
-namespace app\modules\user\models\search;
+namespace skyline\yii\user\models\search;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\modules\user\models\User;
+use skyline\yii\user\models\User;
 use yii\helpers\ArrayHelper;
 
 /**
- * UserSearch represents the model behind the search form about `app\modules\user\models\User`.
+ * UserSearch represents the model behind the search form about `skyline\yii\user\models\User`.
  */
 class UserSearch extends User
 {
