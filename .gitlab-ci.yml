@@ -21,8 +21,10 @@ PSR-check:
   script:
   - apt update
   - apt install --yes git
-  - update_ssh_config_file
   - craft_deploy_key
+  - set_up_ssh_agent
+  - update_ssh_config_file
+  - add_gitlab_fingerprint_to_known_hosts
   - php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
   - php composer-setup.php
   - php -r "unlink('composer-setup.php');"
