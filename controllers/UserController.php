@@ -79,7 +79,7 @@ class UserController extends Controller
         // Do not render the page with the user's previous password attempt. #security
         $model->password = '';
 
-        return $this->render('@app/modules/user/views/user/security/login', [
+        return $this->render('@vendor/skyline/yii.user/views/user/security/login', [
             'model' => $model,
             'forgotPasswordModel' => new \skyline\yii\user\models\forms\RequestPasswordReset(),
         ]);
@@ -137,7 +137,7 @@ class UserController extends Controller
                 $email = new Email();
                 $email->toEmail = $model->email;
                 $email->subject = $userModule->newUserEmailSubject;
-                $email->template = '@app/modules/user/mail/create-account-html';
+                $email->template = '@vendor/skyline/yii.user/mail/create-account-html';
                 $email->params = [
                     'logoSrc' => \Yii::getAlias('@app') . '/web/static/media/logo.svg',
                     'model' => $model,
@@ -309,7 +309,7 @@ class UserController extends Controller
         $model->email = $request->get('email');
         $model->token = $request->get('token');
 
-        return $this->render('@app/modules/user/views/user/recovery/reset', [
+        return $this->render('@vendor/skyline/yii.user/views/user/recovery/reset', [
             'model' => $model,
             'user' => $user,
         ]);

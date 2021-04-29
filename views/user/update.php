@@ -16,8 +16,8 @@ $this->params['pageOptions'] = [
 
 <div class="portlet light">
     <div class="portlet-body">
-		<?= $this->render('_form', [
+        <?= $this->render('_form', [
             'model' => $model,
         ]) ?>
-	</div>
+    </div>
 </div>

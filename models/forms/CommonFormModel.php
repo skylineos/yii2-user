@@ -7,7 +7,7 @@ use skyline\yii\user\models\User;
 
 class CommonFormModel extends Model
 {
-    private $_user = null;
+    private $user = null;
 
     /**
      * Finds user by [[username]]
@@ -16,10 +16,10 @@ class CommonFormModel extends Model
      */
     protected function getUser()
     {
-        if ($this->_user === null) {
-            $this->_user = User::findByEmail($this->username);
+        if ($this->user === null) {
+            $this->user = User::findByEmail($this->username);
         }
 
-        return $this->_user;
+        return $this->user;
     }
 }
