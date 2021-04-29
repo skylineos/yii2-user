@@ -1,8 +1,8 @@
 <?php
 
 use yii\helpers\ArrayHelper;
-use app\modules\metronic\widgets\ActiveForm;
-use app\modules\metronic\widgets\Portlet;
+use skyline\yii\metronic\widgets\ActiveForm;
+use skyline\yii\metronic\widgets\Portlet;
 use yii\rbac\Item;
 
 /* @var $this yii\web\View */

@@ -4,8 +4,8 @@
 /* @var $content string */
 
 use yii\helpers\Html;
-use app\modules\metronic\assets\CoreAsset;
-use app\modules\metronic\assets\LoginAsset;
+use skyline\yii\metronic\assets\CoreAsset;
+use skyline\yii\metronic\assets\LoginAsset;
 
 CoreAsset::register($this);
 LoginAsset::register($this);
