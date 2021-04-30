@@ -33,12 +33,14 @@ class RequestPasswordReset extends CommonFormModel
     public function sendPasswordRecoveryEmail($emailAddress = null, $token = null)
     {
         if ($emailAddress !== null && $token !== null) {
+            $appParams = \Yii::$app->params;
+
             $email = new Email();
             $email->toEmail = $emailAddress;
             $email->subject = \Yii::$app->getModule('user')->passwordRecoverySubject;
             $email->template = '@vendor/skyline/yii.user/mail/password-recovery';
             $email->params = [
-                'logo' => \Yii::getAlias('@app') . '/web/static/media/logo.svg',
+                'logo' => array_key_exists('logoPath', $appParams) ? \Yii::getAlias('@app') . $appParams['logoPath'] : '',
                 'token' => $token,
                 'email' => $emailAddress,
             ];

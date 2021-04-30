@@ -134,12 +134,14 @@ class UserController extends Controller
             $model->setResetToken(true);
 
             if ($model->save()) {
+                $appParams = \Yii::$app->params;
                 $email = new Email();
                 $email->toEmail = $model->email;
                 $email->subject = $userModule->newUserEmailSubject;
                 $email->template = '@vendor/skyline/yii.user/mail/create-account-html';
+                // allow that a logo may not currently exist
                 $email->params = [
-                    'logoSrc' => \Yii::getAlias('@app') . '/web/static/media/logo.svg',
+                    'logoSrc' => array_key_exists('logoPath', $appParams) ? \Yii::getAlias('@app') . $appParams['logoPath'] : '',
                     'model' => $model,
                 ];
 

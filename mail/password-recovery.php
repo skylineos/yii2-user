@@ -15,7 +15,9 @@ use yii\helpers\Url;
           <table class="email-content" width="100%" cellpadding="0" cellspacing="0">
             <tr>
               <td class="email-masthead">
+                <?php if (is_string($logo) && !empty($logo)): ?>
                 <img src="<?=$message->embed($logo);?>" alt="<?=\Yii::$app->id?>" align="center" hspace="30"><br><br>
+                <?php endif ?>
                 <?=Html::a('CMS', Url::home(true) . '/cms', ['class' => 'email-masthead_name'])?>
               </td>
             </tr>
