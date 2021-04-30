@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "56e377e5553e50ce4b4919536794208f",
+    "content-hash": "92c865a3b5aa16e8e987cc59309779b3",
     "packages": [
         {
             "name": "bower-asset/inputmask",
@@ -198,6 +198,53 @@
                 "source": "https://github.com/ezyang/htmlpurifier/tree/master"
             },
             "time": "2020-06-29T00:56:53+00:00"
+        },
+        {
+            "name": "skyline/yii.metronic",
+            "version": "1.1.4",
+            "source": {
+                "type": "git",
+                "url": "git@gitlab.skyts.io:csg/yii/yii2.module.metronic.git",
+                "reference": "887dc459d4445aba53db8b94638028cc18989650"
+            },
+            "require": {
+                "php": ">=7.4"
+            },
+            "require-dev": {
+                "codeception/assert-throws": "*",
+                "codeception/codeception": "4.1.20",
+                "codeception/module-asserts": "*",
+                "codeception/module-phpbrowser": "*",
+                "codeception/module-yii2": "*",
+                "phpunit/php-code-coverage": "*",
+                "squizlabs/php_codesniffer": "*",
+                "yiisoft/yii2": "~2.0.41",
+                "yiisoft/yii2-bootstrap4": "~2.0.6",
+                "yiisoft/yii2-debug": "~2.1.0"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "skyline\\yii\\metronic\\": ""
+                }
+            },
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Damien Kemens",
+                    "email": "dkemens@skylinenet.net"
+                }
+            ],
+            "description": "Metronic yii2-widget styler extension",
+            "keywords": [
+                "helper",
+                "metronic",
+                "styler",
+                "yii2"
+            ],
+            "time": "2021-04-29T13:04:01+00:00"
         },
         {
             "name": "yiisoft/yii2",
@@ -1344,16 +1391,16 @@
         },
         {
             "name": "guzzlehttp/psr7",
-            "version": "1.8.1",
+            "version": "1.8.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "35ea11d335fd638b5882ff1725228b3d35496ab1"
+                "reference": "dc960a912984efb74d0a90222870c72c87f10c91"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/35ea11d335fd638b5882ff1725228b3d35496ab1",
-                "reference": "35ea11d335fd638b5882ff1725228b3d35496ab1",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/dc960a912984efb74d0a90222870c72c87f10c91",
+                "reference": "dc960a912984efb74d0a90222870c72c87f10c91",
                 "shasum": ""
             },
             "require": {
@@ -1413,9 +1460,9 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/psr7/issues",
-                "source": "https://github.com/guzzle/psr7/tree/1.8.1"
+                "source": "https://github.com/guzzle/psr7/tree/1.8.2"
             },
-            "time": "2021-03-21T16:25:00+00:00"
+            "time": "2021-04-26T09:17:50+00:00"
         },
         {
             "name": "myclabs/deep-copy",

@@ -65,12 +65,10 @@ class Email extends Model
     {
         $message = \Yii::$app
             ->mailer
-            ->compose($this->template, [
-                'model' => $this,
-            ])
+            ->compose($this->template, $this->params)
             ->setFrom([
                 $this->fromEmail => $this->fromName,
-                ])
+            ])
             ->setTo($this->toEmail)
             ->setSubject($this->subject);
 
