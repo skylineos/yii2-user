@@ -4,7 +4,7 @@ include:
 
 variables:
   CHECK_FILES: .
-  CHECK_EXCLUDE_DIRS: ./vendor/*,*/tests/*,*/migrations/*,*/views/*
+  CHECK_EXCLUDE_DIRS: ./vendor/*,*/tests/*,*/migrations/*,*/views/*,*/mail/*
   CHECK_STANDARDS: PSR12
 
 cache:
