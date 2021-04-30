@@ -15,7 +15,7 @@ use yii\helpers\Url;
             <table class="email-content" width="100%" cellpadding="0" cellspacing="0">
                 <tr>
                     <td class="email-masthead">
-                    <?php if (!is_string($logoSrc) || empty($logoSrc)): ?>
+                    <?php if (is_string($logoSrc) && !empty($logoSrc)): ?>
                         <img src="<?= $logoSrc ?>" alt="Application" align="center" hspace="30">
                         <br><br>
                     <?php endif ?>
