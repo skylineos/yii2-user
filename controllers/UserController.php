@@ -63,7 +63,7 @@ class UserController extends Controller
     public function beforeAction($action)
     {
 
-        if (!\Yi::$app->user->isGuest) {
+        if (!\Yii::$app->user->isGuest) {
             $this->layout = \Yii::$app->getModule('cms')->layout;
         }
         return true;
