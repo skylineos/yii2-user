@@ -60,6 +60,15 @@ class UserController extends Controller
         ];
     }
 
+    public function BeforeAction($action)
+    {
+
+        if (!\Yi::$app->user->isGuest) {
+            $this->layout = \Yii::$app->getModule('cms')->layout;
+        }
+        return true;
+    }
+
     /**
      * Login action.
      *
