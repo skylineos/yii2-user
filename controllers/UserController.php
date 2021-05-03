@@ -60,7 +60,7 @@ class UserController extends Controller
         ];
     }
 
-    public function BeforeAction($action)
+    public function beforeAction($action)
     {
 
         if (!\Yi::$app->user->isGuest) {
