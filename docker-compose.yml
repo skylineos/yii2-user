@@ -1,0 +1,10 @@
+version: '3.7'
+services:
+    composer:
+        restart: 'no'
+        image: composer:latest
+        command: sh -c "ssh-keyscan -H gitlab.skyts.io >> ~/.ssh/known_hosts && composer update && composer install"
+        volumes:
+            - .:/app
+            - ~/.ssh/id_rsa:/root/.ssh/id_rsa
+      
