@@ -62,7 +62,6 @@ class UserController extends Controller
 
     public function beforeAction($action)
     {
-
         if (!\Yii::$app->user->isGuest) {
             $this->layout = \Yii::$app->getModule('cms')->layout;
         }
@@ -88,7 +87,7 @@ class UserController extends Controller
         // Do not render the page with the user's previous password attempt. #security
         $model->password = '';
 
-        return $this->render('@vendor/skyline/yii.user/views/user/security/login', [
+        return $this->render('@viewRoot/views/user/security/login', [
             'model' => $model,
             'forgotPasswordModel' => new \skyline\yii\user\models\forms\RequestPasswordReset(),
         ]);
@@ -147,7 +146,7 @@ class UserController extends Controller
                 $email = new Email();
                 $email->toEmail = $model->email;
                 $email->subject = $userModule->newUserEmailSubject;
-                $email->template = '@vendor/skyline/yii.user/mail/create-account-html';
+                $email->template = '@viewRoot/mail/create-account-html';
                 // allow that a logo may not currently exist
                 $email->params = [
                     'logoSrc' => array_key_exists('logoPath', $appParams) ? \Yii::getAlias('@app') . $appParams['logoPath'] : '',
@@ -320,7 +319,7 @@ class UserController extends Controller
         $model->email = $request->get('email');
         $model->token = $request->get('token');
 
-        return $this->render('@vendor/skyline/yii.user/views/user/recovery/reset', [
+        return $this->render('@viewRoot/views/user/recovery/reset', [
             'model' => $model,
             'user' => $user,
         ]);
