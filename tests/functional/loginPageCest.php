@@ -2,10 +2,6 @@
 
 class loginPageCest
 {
-    public function beforeSuite()
-    {
-    }
-
     public function _before(FunctionalTester $I)
     {
     }
