@@ -1,29 +1,25 @@
 <?php
 
+$db = require __DIR__ . '/test_db.php';
+
 return [
     'id' => 'Yii2 User Module',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
-    'homeUrl' => '/cms',
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm' => '@vendor/npm-asset',
     ],
     'components' => [
+        'db' => $db,
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'Eiz_bnJClPYQc_zO8McmbvqVv_QOLd2J',
-        ],
-        'cache' => [
-            'class' => 'yii\caching\FileCache',
         ],
         'user' => [
             'identityClass' => 'skyline\yii\user\models\User',
             'enableAutoLogin' => true,
             'loginUrl' => ['/cms/user/login'],
-        ],
-        'errorHandler' => [
-            'errorAction' => 'site/error',
         ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',

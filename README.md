@@ -1,6 +1,22 @@
 # Skyilne Yii User Extension
 
+
 An extension for the Yii framework to boilerplate the creation, update, viewing, and removal of authentication users.
+
+- [Skyilne Yii User Extension](#skyilne-yii-user-extension)
+    - [Installation](#installation)
+    - [Yii compatibility](#yii-compatibility)
+    - [Configure](#configure)
+        - [Params](#params)
+    - [Migrations](#migrations)
+    - [Dependencies](#dependencies)
+    - [Testing (Unit and Functional)](#testing-unit-and-functional)
+        - [Functional tests (database)](#functional-tests-database)
+        - [Running Tests](#running-tests)
+        - [Testing Branches](#testing-branches)
+        - [Testing Hints and Tips](#testing-hints-and-tips)
+
+<hr>
 
 ## Installation
 
@@ -18,10 +34,12 @@ Add an entry into the `required` property of the `compose.json` file:
 ```
 Where [version] is the version of this extension.
 
+
 ## Yii compatibility
 | Extension Version | Yii Version |
 | ----------------- | ----------- |
 | 1.0.0 | yii2 >= 2.0.41 |
+
 
 ## Configure
 
@@ -136,3 +154,35 @@ If something goes wrong with the migration, remove any lingering changes with th
 ## Dependencies
 - `skyline\yii\metronic: >=1.0.0` (accessed with the `git@gitlab.skyts.io:csg/yii/yii2.module.metronic.git` repository entry)
 - `aws/aws-sdk-php: *`, for mail (deprecated for posix)
+
+## Testing (Unit and Functional)
+
+This package ships with configuration and docker-compose for easy testing. Docker-compose will give you access to php 
+extensions, xdebug (for code coverage), composer (will install your dependencies), and a database for functional testing.
+
+1. `docker-compose build` *only necessary if this is your first run or if you've modified the Dockerfile*
+1. `docker-compose up -d`
+1. `docker-compose exec php bash`
+
+### Functional tests (database)
+
+You'll likely need a database, so you'll want it up date. 
+
+1. `php /var/www/html/tests/yii.php migrate/up`
+
+### Running Tests
+
+Assuming you're bashed into the php container and in /var/www/html
+
+1. `./vendor/bin/codecept run`
+1. `./vendor/bin/codecept --help`
+
+### Testing Branches
+
+If you feel the need or think it's generally a good idea (it is), feel free to branch from `develop`. Otherwise, 
+for smaller updates, be sure to do all of your work on the `develop` branch. You are expected to submit a merge request.
+
+### Testing Hints and Tips
+
+The team largely uses VSCode, it is *recommended* that you do as well. If you find extensions or workflows that are 
+mighty helpful, please feel free to add them here.
