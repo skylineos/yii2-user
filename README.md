@@ -10,7 +10,9 @@ An extension for the Yii framework to boilerplate the creation, update, viewing,
         - [Params](#params)
     - [Migrations](#migrations)
     - [Dependencies](#dependencies)
-    - [Testing](#testing)
+    - [Testing (Unit and Functional)](#testing-unit-and-functional)
+        - [Functional tests (database)](#functional-tests-database)
+        - [Running Tests](#running-tests)
         - [Testing Branches](#testing-branches)
         - [Testing Hints and Tips](#testing-hints-and-tips)
 
@@ -153,18 +155,27 @@ If something goes wrong with the migration, remove any lingering changes with th
 - `skyline\yii\metronic: >=1.0.0` (accessed with the `git@gitlab.skyts.io:csg/yii/yii2.module.metronic.git` repository entry)
 - `aws/aws-sdk-php: *`, for mail (deprecated for posix)
 
-## Testing
+## Testing (Unit and Functional)
 
-This package ships with configuration and docker-compose for easy testing.
+This package ships with configuration and docker-compose for easy testing. Docker-compose will give you access to php 
+extensions, xdebug (for code coverage), composer (will install your dependencies), and a database for functional testing.
 
 1. `docker-compose build` *only necessary if this is your first run or if you've modified the Dockerfile*
 1. `docker-compose up -d`
 1. `docker-compose exec php bash`
+
+### Functional tests (database)
+
+You'll likely need a database, so you'll want it up date. 
+
 1. `php /var/www/html/tests/yii.php migrate/up`
 
-You are now free to write your tests and run them from within the container. eg (assuming you are in /var/www/html)
+### Running Tests
 
-`./vendor/bin/codecept run --coverage-html`
+Assuming you're bashed into the php container and in /var/www/html
+
+1. `./vendor/bin/codecept run`
+1. `./vendor/bin/codecept --help`
 
 ### Testing Branches
 
