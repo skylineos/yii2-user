@@ -12,4 +12,4 @@ extensions:
 coverage:
     enabled: true
     include:
-    - models/*
+        - models/*

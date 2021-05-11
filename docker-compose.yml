@@ -1,18 +1,43 @@
 version: '3.7'
 services:
     php:
-        restart: 'always'
-        image: chrisb9/php8:cli-dev
+        build: 
+            context: .
+            dockerfile: Dockerfile
         environment:
           XDEBUG_MODE: 'coverage'
+          YII_ENV: 'test'
         volumes:
-            - .:/app
+            - .:/var/www/html
+        networks:
+            - my-network
+        depends_on:
+            - db
 
+    db:
+        image: mysql:8.0
+        restart: always
+        environment:
+            - MYSQL_DATABASE=test
+            - MYSQL_USER=test
+            - MYSQL-PASSWORD=test
+            - MYSQL_ROOT_PASSWORD=rootpassword
+        ports:
+            - '3306:3306'
+        expose:
+            - "3306"
+        networks:
+            - my-network
+    
     composer:
         restart: 'no'
         image: composer:latest
         command: sh -c "ssh-keyscan -H gitlab.skyts.io >> ~/.ssh/known_hosts && composer update && composer install"
         volumes:
-            - .:/app
+            - .:/var/www/html
             - ~/.ssh/id_rsa:/root/.ssh/id_rsa
       
+networks:
+    my-network:
+        driver: bridge
+              
