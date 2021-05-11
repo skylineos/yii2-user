@@ -1,5 +1,13 @@
 version: '3.7'
 services:
+    php:
+        restart: 'always'
+        image: chrisb9/php8:cli-dev
+        environment:
+          XDEBUG_MODE: 'coverage'
+        volumes:
+            - .:/app
+
     composer:
         restart: 'no'
         image: composer:latest

@@ -94,7 +94,7 @@ return [
         ],
     ],
     'params' => [
-        'debug' => true,
+        'testing' => true,
         'supportEmail' => 'csg.support@skylinenet.net',
         'supportEmailDisplayName' => 'Stream Tream & the Jacks',
         'newUserEmailSubject' => 'New User Email Subject',

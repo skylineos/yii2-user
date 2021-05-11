@@ -10,14 +10,14 @@ class forgotPasswordCest
     }
 
     // tests
-    public function tryToTest(FunctionalTester $I)
+    public function doesLinkExist(FunctionalTester $I)
     {
         // Link is correct
         $I->seeLink('Forget Password ?');
-        // $I->seeLink('Forget Password ?','javascript:;');
+        $I->seeLink('Forget Password ?','javascript:;');
 
-        // Link works
-        // $I->click('Forget Password ?','#kt-login__link');
-        // $I->see('Forgotten Password ?');
+        // LINK WORKS? --- ERROR for: $I->click('Forget Password ?');
+        // On Login Page, the link "Forget Password ?" requires a javascript response that 
+        // we cannot mock in codeception.
     }
 }
