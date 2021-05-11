@@ -29,6 +29,7 @@
         "codeception/module-phpbrowser": "^1.0.0",
         "codeception/module-asserts": "^1.0.0",
         "codeception/assert-throws": "*",
+        "codeception/module-db": "*",
         "squizlabs/php_codesniffer": "*",
         "phpunit/php-code-coverage": "*",
         "yiisoft/yii2-swiftmailer": "*",

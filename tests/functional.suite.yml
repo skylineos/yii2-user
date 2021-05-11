@@ -11,5 +11,14 @@ modules:
         # add a framework module here
         - Yii2:
             configFile: 'config/test.php'
+        - Db:
+            dsn: 'mysql:host=db;dbname=test'
+            user: 'root'
+            password: 'rootpassword'
+            populate: true
+            cleanup: true
+            initial_queries:
+                - 'CREATE DATABASE IF NOT EXISTS test;'
+                - 'USE test;'
         - \Helper\Functional
     step_decorators: ~
