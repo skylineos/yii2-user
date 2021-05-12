@@ -39,7 +39,7 @@ return [
             ],
         ],
         'assetManager' => [
-            'basePath' => dirname(__DIR__) . '/tests/_data',
+            'basePath' => '/app/runtime/assets',
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,

@@ -21,7 +21,7 @@
     },
     "require": {
         "php": ">=7.4",
-        "skyline/yii.metronic": ">=1.1.3",
+        "skyline/yii.metronic": "~1.1",
         "yiisoft/yii2": ">=2.0.41"
     },
     "require-dev": {

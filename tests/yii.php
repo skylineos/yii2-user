@@ -1,7 +1,7 @@
 <?php
 
-    require '/var/www/html/vendor/autoload.php';
-    require '/var/www/html/vendor/yiisoft/yii2/Yii.php';
-    $config = require '/var/www/html/config/test.php';
+    require '/app/vendor/autoload.php';
+    require '/app/vendor/yiisoft/yii2/Yii.php';
+    $config = require '/app/config/test_console.php';
 
     (new yii\console\Application($config))->run();
