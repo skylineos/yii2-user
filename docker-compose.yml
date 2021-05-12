@@ -8,7 +8,7 @@ services:
           XDEBUG_MODE: 'coverage'
           YII_ENV: 'test'
         volumes:
-            - .:/var/www/html
+            - .:/app
         networks:
             - my-network
         depends_on:
@@ -34,7 +34,7 @@ services:
         image: composer:latest
         command: sh -c "ssh-keyscan -H gitlab.skyts.io >> ~/.ssh/known_hosts && composer update && composer install"
         volumes:
-            - .:/var/www/html
+            - .:/app
             - ~/.ssh/id_rsa:/root/.ssh/id_rsa
       
 networks:

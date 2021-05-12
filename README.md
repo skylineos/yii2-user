@@ -168,11 +168,11 @@ extensions, xdebug (for code coverage), composer (will install your dependencies
 
 You'll likely need a database, so you'll want it up date. 
 
-1. `php /var/www/html/tests/yii.php migrate/up`
+1. `php /app/tests/yii.php migrate/up`
 
 ### Running Tests
 
-Assuming you're bashed into the php container and in /var/www/html
+Assuming you're bashed into the php container and in /app
 
 1. `./vendor/bin/codecept run`
 1. `./vendor/bin/codecept --help`
