@@ -1,5 +1,7 @@
 <?php
 
+use skyline\yii\user\tests\fixtures\UserFixture;
+
 class loginPageCest
 {
     public function _before(FunctionalTester $I)
