@@ -47,13 +47,10 @@ return [
             'rules' => [
                 '/cms/user/login' => '/user/user/login',
                 '/cms/user/logout' => '/user/user/logout',
-                '/cms' => '/cms',
+                '/cms' => '/user/user/index',
                 '/cms/user/<action>' => '/user/user/<action>',
                 '/cms/user/' => '/user/user',
-                '/cms/<controller>' => '/cms/<controller>',
-                '/cms/<controller>/<action>' => '/cms/<controller>/<action>',
                 '/' => '/',
-                '<slug:.*>' => '/site/render',
             ],
         ],
     ],
@@ -76,7 +73,7 @@ return [
              */
 
             // Where to redirect after logging in/handling auth sessions
-            'homeRedirect' => '/cms',
+            'homeRedirect' => '/user/user/index',
 
             // How long the password reset token should last (eg. today + x time)
             // @see https://www.php.net/strtotime

@@ -62,7 +62,7 @@ class UserController extends Controller
 
     public function beforeAction($action)
     {
-        if (!\Yii::$app->user->isGuest) {
+        if (!\Yii::$app->user->isGuest && YII_ENV !== 'test') {
             $this->layout = \Yii::$app->getModule('cms')->layout;
         }
         return true;
@@ -81,7 +81,7 @@ class UserController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+            return $this->goBack(\Yii::$app->getModule('user')->homeRedirect);
         }
 
         // Do not render the page with the user's previous password attempt. #security
