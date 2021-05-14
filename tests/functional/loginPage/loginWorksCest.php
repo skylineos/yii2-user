@@ -12,7 +12,7 @@ class loginWorksCest
     }
 
     // tests
-    public function tryToTest(FunctionalTester $I)
+    public function userCanLogin(FunctionalTester $I)
     {
         $I->haveFixtures([
             'user' => [
@@ -28,6 +28,6 @@ class loginWorksCest
         $I->fillField(['name' => 'LoginForm[username]'], 'jdoe@skylinenet.net');
         $I->fillField(['name' => 'LoginForm[password]'], 'temporary');
         $I->click('#kt_login_signin_submit');
-        $I->seeCurrentUrlEquals('/cms');
+        $I->seeCurrentUrlEquals('/user/user/index');
     }
 }
