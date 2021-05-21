@@ -37,10 +37,11 @@ $this->params['pageOptions']['links'] = ['create'];
                 'attribute' => 'status',
                 'format' => 'html',
                 'value' => function ($model) {
-                    return $model->status === 1
+                    return $model->status === skyline\yii\user\models\User::STATUS_ACTIVE
                         ? Badge::widget(['content' => 'Active', 'style' => 'success'])
                         : Badge::widget(['content' => 'Inactive', 'style' => 'danger']);
-                }
+                },
+                'filter' => skyline\yii\cms\components\CommonConstants::STATUS_LIST,
             ],
             [
                 'attribute' => 'lastLogin',

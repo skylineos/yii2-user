@@ -1,4 +1,4 @@
 /vendor/
 /tests/_output/*
-runtime
+runtime/*
 composer.lock

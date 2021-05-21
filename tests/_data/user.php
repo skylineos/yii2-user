@@ -2,9 +2,9 @@
 
 return [
     'user1' => [
-        'username' => 'John Doe',
+        'name' => 'John Doe',
         'email' => 'jdoe@skylinenet.net',
-        'passwordHash' => '$2y$13$WSyE5hHsG1rWN2jV8LRHzubilrCLI5Ev/iK0r3jRuwQEs2ldRu.a2',
+        'passwordHash' => '$2y$13$2AhSLq7.OCvzgCLIa7OVX.XaUpjerPJngMz6yKE4P.J5yY7aQZud.', // "temporary"
         'modifiedBy' => 1,
         'lastModified' => '2020-01-01 12:00:00',
         'dateCreated' => '2020-01-01 12:00:00',
