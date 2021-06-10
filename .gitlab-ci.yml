@@ -42,6 +42,12 @@ unit-tests:
   script:
     - ./vendor/bin/codecept run unit
 
+functional-tests:
+  image: devilbox/php-fpm:7.4-mods
+  stage: tests
+  script:
+    - ./vendor/bin/codecept run functional
+
 ##These don't actually exist yet
 # api-tests:
 #   stage: tests
