@@ -43,7 +43,7 @@ unit-tests:
     - ./vendor/bin/codecept run unit
 
 functional-tests:
-  image: docker:latest
+  image: docker/compose:latest
   stage: tests
   services:
     - docker:dind
