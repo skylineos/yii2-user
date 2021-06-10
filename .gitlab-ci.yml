@@ -43,10 +43,14 @@ unit-tests:
     - ./vendor/bin/codecept run unit
 
 functional-tests:
-  image: devilbox/php-fpm:7.4-mods
+  image: docker:latest
   stage: tests
+  services:
+    - docker:dind
   script:
-    - ./vendor/bin/codecept run functional
+    - docker-compose build
+    - docker-compose up
+    - docker-compose exec php /app/vendor/bin/codecept run functional
 
 ##These don't actually exist yet
 # api-tests:
