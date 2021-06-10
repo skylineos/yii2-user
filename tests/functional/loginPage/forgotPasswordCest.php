@@ -1,23 +1,25 @@
 <?php
 
+namespace loginPage;
+
 class forgotPasswordCest
 {
     // Verify right page
-    public function _before(FunctionalTester $I)
+    public function _before(\FunctionalTester $I)
     {
         $I->amOnPage('/cms/user/login');
         $I->see('Please Sign In', '.kt-login__title');
     }
 
     // tests
-    public function linkExists(FunctionalTester $I)
+    public function linkExists(\FunctionalTester $I)
     {
         // Link is correct
         $I->seeLink('Forget Password ?');
         $I->seeLink('Forget Password ?', 'javascript:;');
     }
 
-    public function forgotPasswordFormExists(FunctionalTester $I)
+    public function forgotPasswordFormExists(\FunctionalTester $I)
     {
         $I->seeElement('input', ['name' => 'RequestPasswordReset[email]']);
         $I->seeElement('#kt_login_forgot_cancel');

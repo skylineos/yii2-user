@@ -308,12 +308,16 @@ class UserController extends Controller
             }
         }
 
+        if (!$request->get('email') || !$request->get('token')) {
+            throw new \yii\web\ForbiddenHttpException();
+        }
+
         $user = User::findByToken($request->get('email'), $request->get('token'));
 
         /**
          * Make sure the expected parameters exist and are at least
          */
-        if ($request->get('email') === null || !$request->get('token') === null || $user === null) {
+        if ($user === null) {
             \Yii::$app->session->setFlash(
                 'resetFailed',
                 'We were unable to reset your password. Please contact support.'

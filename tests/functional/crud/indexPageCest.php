@@ -1,11 +1,13 @@
 <?php
 
+namespace crud;
+
 use skyline\yii\user\tests\fixtures\UserFixture;
 use Codeception\Util\Locator;
 
-class indexPagePaginateCest
+class indexPageCest
 {
-    public function _before(FunctionalTester $I)
+    public function _before(\FunctionalTester $I)
     {
         $I->haveFixtures([
             'user' => [
@@ -21,7 +23,7 @@ class indexPagePaginateCest
     }
 
     // All elements should be present
-    public function basePageElements(FunctionalTester $I)
+    public function basePageElements(\FunctionalTester $I)
     {
         $I->wantTo('Check header content and summary');
         $I->see('User Accounts', 'h3');
@@ -64,7 +66,7 @@ class indexPagePaginateCest
          */
     }
 
-    public function clickUpdate(FunctionalTester $I)
+    public function clickUpdate(\FunctionalTester $I)
     {
         $locatorUrl = '/cms/user/update?id=1';
 
@@ -73,7 +75,12 @@ class indexPagePaginateCest
         $I->seeInCurrentUrl('user/update?id=1');
     }
 
-    #public function clickDelete(FunctionalTester $I)
+    public function gridFilters(\FunctionalTester $I)
+    {
+        // Javascript, pressing enter requires web driver
+    }
+
+    #public function clickDelete(\FunctionalTester $I)
     #{
         // Because of confirmation prompt, requires web driver
     #}

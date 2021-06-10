@@ -1,10 +1,12 @@
 <?php
 
+namespace crud;
+
 use skyline\yii\user\tests\fixtures\UserFixture;
 
 class updatePageCest
 {
-    public function _before(FunctionalTester $I)
+    public function _before(\FunctionalTester $I)
     {
         $I->haveFixtures([
             'user' => [
@@ -20,20 +22,20 @@ class updatePageCest
     }
 
     // tests about seeing items on the create page
-    public function displaysMessageAboutEmailedInstructions(FunctionalTester $I)
+    public function displaysMessageAboutEmailedInstructions(\FunctionalTester $I)
     {
         $I->dontSee('An email containing instructions for completing the account registration will 
         be sent to the user when you click \'Create\'');
     }
 
-    public function hasAppropriateLabels(FunctionalTester $I)
+    public function hasAppropriateLabels(\FunctionalTester $I)
     {
         $I->seeElement('label', ['for' => 'user-name']);
         $I->seeElement('label', ['for' => 'user-email']);
         $I->seeElement('label', ['for' => 'user-status']);
     }
 
-    public function hasAppropriateFields(FunctionalTester $I)
+    public function hasAppropriateFields(\FunctionalTester $I)
     {
         $I->seeElement('input', ['name' => '_csrf']);
         $I->seeElement('input', ['name' => 'User[name]']);
@@ -43,17 +45,17 @@ class updatePageCest
         $I->seeInFormFields('form[id=user-form]', [
             'User[name]' => 'John Doe 1',
             'User[email]' => 'johndoe1@skylinenet.net',
-            'User[status]' =>  skyline\yii\user\models\User::STATUS_ACTIVE,
+            'User[status]' =>  \skyline\yii\user\models\User::STATUS_ACTIVE,
         ]);
     }
 
-    public function hasCreateAndCancelButtons(FunctionalTester $I)
+    public function hasCreateAndCancelButtons(\FunctionalTester $I)
     {
         $I->see('update', 'button');
         $I->seeLink('Cancel', '/cms');
     }
 
-    public function getErrorsOnEmptyFields(FunctionalTester $I)
+    public function getErrorsOnEmptyFields(\FunctionalTester $I)
     {
         $I->fillField(['name' => 'User[name]'], '');
         $I->fillField(['name' => 'User[email]'], '');
@@ -62,14 +64,14 @@ class updatePageCest
         $I->see('Email cannot be blank.', '.help-block');
     }
 
-    public function getErrorOnBadEmail(FunctionalTester $I)
+    public function getErrorOnBadEmail(\FunctionalTester $I)
     {
         $I->fillField(['name' => 'User[email]'], 'Not an email address');
         $I->click('Update');
         $I->see('Email is not a valid email address.', '.help-block');
     }
 
-    public function goodData(FunctionalTester $I)
+    public function goodData(\FunctionalTester $I)
     {
         $I->click('Update');
         $I->seeCurrentUrlEquals('/cms');
