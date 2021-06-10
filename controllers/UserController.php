@@ -142,22 +142,27 @@ class UserController extends Controller
             $model->setResetToken(true);
 
             if ($model->save()) {
-                $appParams = \Yii::$app->params;
-                $email = new Email();
-                $email->toEmail = $model->email;
-                $email->subject = $userModule->newUserEmailSubject;
-                $email->template = '@viewRoot/mail/create-account-html';
-                // allow that a logo may not currently exist
-                $email->params = [
-                    'logoSrc' => array_key_exists('logoPath', $appParams) ? \Yii::getAlias('@app') . $appParams['logoPath'] : '',
-                    'model' => $model,
-                ];
+                // Don't send an email if in testing
+                if (YII_ENV !== 'test') {
+                    $appParams = \Yii::$app->params;
+                    $email = new Email();
+                    $email->toEmail = $model->email;
+                    $email->subject = $userModule->newUserEmailSubject;
+                    $email->template = '@viewRoot/mail/create-account-html';
+                    // allow that a logo may not currently exist
+                    $email->params = [
+                        'logoSrc' => array_key_exists('logoPath', $appParams)
+                            ? \Yii::getAlias('@app') . $appParams['logoPath']
+                            : '',
+                        'model' => $model,
+                    ];
 
-                if ($email->sendEmail()) {
-                    \Yii::$app->session->setFlash('success', 'User Created');
-                } else {
-                    \Yii::$app->session->setFlash('warning', 'The user was created successfully, but the email could
-                    not be sent to the user.');
+                    if ($email->sendEmail()) {
+                        \Yii::$app->session->setFlash('success', 'User Created');
+                    } else {
+                        \Yii::$app->session->setFlash('warning', 'The user was created successfully, but the email could
+                        not be sent to the user.');
+                    }
                 }
 
                 return $this->redirect(['index']);

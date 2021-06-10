@@ -63,6 +63,7 @@ class Email extends Model
 
     public function sendEmail(): bool
     {
+        Codeception\Util\Debug::debug($this->template);
         $message = \Yii::$app
             ->mailer
             ->compose($this->template, $this->params)

@@ -11,7 +11,6 @@ An extension for the Yii framework to boilerplate the creation, update, viewing,
     - [Migrations](#migrations)
     - [Dependencies](#dependencies)
     - [Testing (Unit and Functional)](#testing-unit-and-functional)
-        - [Functional tests (database)](#functional-tests-database)
         - [Running Tests](#running-tests)
         - [Testing Branches](#testing-branches)
         - [Testing Hints and Tips](#testing-hints-and-tips)
@@ -163,12 +162,6 @@ extensions, xdebug (for code coverage), composer (will install your dependencies
 1. `docker-compose build` *only necessary if this is your first run or if you've modified the Dockerfile*
 1. `docker-compose up -d`
 1. `docker-compose exec php bash`
-
-### Functional tests (database)
-
-You'll likely need a database, so you'll want it up date. 
-
-1. `php /app/tests/yii.php migrate/up`
 
 ### Running Tests
 
