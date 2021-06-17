@@ -5,6 +5,7 @@ services:
             context: .
             dockerfile: Dockerfile
         tty: true
+        command: sh -c "mkdir -p /app/runtime/assets"
         environment:
           XDEBUG_MODE: 'coverage'
           YII_ENV: 'test'
