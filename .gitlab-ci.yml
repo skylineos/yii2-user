@@ -53,6 +53,8 @@ functional-tests:
     - docker-compose build
     - docker-compose up -d 
   script:
+    - echo 'Sleeping so the containers can start'
+    - sleep 30
     - docker-compose exec -T php /app/vendor/bin/codecept run functional
 
 ##These don't actually exist yet
