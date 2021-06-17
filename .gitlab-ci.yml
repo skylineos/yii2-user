@@ -49,6 +49,7 @@ functional-tests:
     - docker:dind
   variables:
     DOCKER_DRIVER: overlay2
+    CRYPTOGRAPHY_DONT_BUILD_RUST: 1
   before_script:
     - apk add --no-cache python3-dev py3-pip build-base openssl-dev libffi-dev
     - pip install docker-compose==1.29
