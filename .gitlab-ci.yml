@@ -53,7 +53,7 @@ functional-tests:
     - docker-compose build
     - docker-compose up -d 
   script:
-    - docker-compose exec php /app/vendor/bin/codecept run functional
+    - docker-compose exec -T php /app/vendor/bin/codecept run functional
 
 ##These don't actually exist yet
 # api-tests:
