@@ -12,41 +12,39 @@ cache:
   - vendor/
 
 stages:
-- check-standards
+#- check-standards
 - tests
 
-PSR-check:
-  image: devilbox/php-fpm:7.4-mods
-  stage: check-standards
-  script:
-  - apt update
-  - apt install --yes git
-  - craft_deploy_key
-  - set_up_ssh_agent
-  - update_ssh_config_file
-  - add_gitlab_fingerprint_to_known_hosts
-  - php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-  - php composer-setup.php
-  - php -r "unlink('composer-setup.php');"
-  - php composer.phar install
-  - ./vendor/bin/phpcs
-      --standard=$CHECK_STANDARDS
-      --ignore=$CHECK_EXCLUDE_DIRS
-      --error-severity=1
-      --warning-severity=8
-      --extensions=php $CHECK_FILES
+#PSR-check:
+#  image: devilbox/php-fpm:7.4-mods
+#  stage: check-standards
+#  script:
+#  - apt update
+#  - apt install --yes git
+#  - craft_deploy_key
+#  - set_up_ssh_agent
+#  - update_ssh_config_file
+#  - add_gitlab_fingerprint_to_known_hosts
+#  - php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+#  - php composer-setup.php
+#  - php -r "unlink('composer-setup.php');"
+#  - php composer.phar install
+#  - ./vendor/bin/phpcs
+#      --standard=$CHECK_STANDARDS
+#      --ignore=$CHECK_EXCLUDE_DIRS
+#      --error-severity=1
+#      --warning-severity=8
+#      --extensions=php $CHECK_FILES
 
-unit-tests:
-  image: devilbox/php-fpm:7.4-mods
-  stage: tests
-  script:
-    - ./vendor/bin/codecept run unit
+#unit-tests:
+#  image: devilbox/php-fpm:7.4-mods
+#  stage: tests
+#  script:
+#    - ./vendor/bin/codecept run unit
 
 functional-tests:
   image: docker:latest
   stage: tests
-  services:
-    - docker:dind
   variables:
     DOCKER_DRIVER: overlay2
   before_script:
