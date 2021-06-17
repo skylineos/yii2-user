@@ -4,6 +4,7 @@ use yii\widgets\Pjax;
 use skyline\yii\metronic\widgets\GridView;
 use skyline\yii\metronic\widgets\Portlet;
 use skyline\yii\metronic\widgets\Badge;
+use skyline\yii\user\models\User;
 
 /* @var $this yii\web\View */
 /* @var $searchModel skyline\yii\user\models\search\UserSearch */
@@ -32,24 +33,45 @@ $this->params['pageOptions']['links'] = ['create'];
             ],
 
             'email:email',
-            'name',
+            [
+                'attribute' => 'name',
+                'contentOptions' => [
+                    'class' => 'td-user-name'
+                ]
+            ],
             [
                 'attribute' => 'status',
                 'format' => 'html',
                 'value' => function ($model) {
-                    return $model->status === skyline\yii\user\models\User::STATUS_ACTIVE
+                    return $model->status === User::STATUS_ACTIVE
                         ? Badge::widget(['content' => 'Active', 'style' => 'success'])
                         : Badge::widget(['content' => 'Inactive', 'style' => 'danger']);
                 },
-                'filter' => skyline\yii\cms\components\CommonConstants::STATUS_LIST,
+                'filter' => [
+                    User::STATUS_ACTIVE => 'Active',
+                    User::STATUS_INACTIVE => 'Inactive',
+                ],
+                'contentOptions' => [
+                    'class' => 'td-user-status'
+                ]
             ],
             [
                 'attribute' => 'lastLogin',
                 'format' => 'datetime',
                 'filter' => false,
+                'contentOptions' => [
+                    'class' => 'td-user-lastLogin'
+                ]
             ],
             // 'dateCreated',
-             'lastModified:datetime',
+            [
+                 'attribute' => 'lastModified',
+                 'format' => 'datetime',
+                 'contentOptions' => [
+                     'class' => 'td-user-lastModified'
+                 ],
+                 'filter' => false,
+            ],
             // 'modifiedBy',
         ],
     ]); ?>

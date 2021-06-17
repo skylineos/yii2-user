@@ -1,18 +1,19 @@
 <?php
 
-// Make sure to 'use' a fixture if you want to include it below
+namespace loginPage;
+
 use skyline\yii\user\tests\fixtures\UserFixture;
 
 class loginWorksCest
 {
-    public function _before(FunctionalTester $I)
+    public function _before(\FunctionalTester $I)
     {
         $I->amOnPage('/cms/user/login');
         $I->see('Please Sign In', '.kt-login__title');
     }
 
     // tests
-    public function userCanLogin(FunctionalTester $I)
+    public function userCanLogin(\FunctionalTester $I)
     {
         $I->haveFixtures([
             'user' => [

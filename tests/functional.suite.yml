@@ -21,4 +21,5 @@ modules:
                 - 'CREATE DATABASE IF NOT EXISTS test;'
                 - 'USE test;'
         - \Helper\Functional
+        - Date
     step_decorators: ~

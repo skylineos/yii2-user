@@ -4,6 +4,7 @@ services:
         build: 
             context: .
             dockerfile: Dockerfile
+        tty: true
         environment:
           XDEBUG_MODE: 'coverage'
           YII_ENV: 'test'
@@ -37,8 +38,20 @@ services:
         command: sh -c "ssh-keyscan -H gitlab.skyts.io >> ~/.ssh/known_hosts && composer update && composer install"
         volumes:
             - .:/app
-            - ~/.ssh/id_rsa:/root/.ssh/id_rsa
+            - ~/.ssh/id_rsa:/root/.ssh/id_rsa          
       
+    migration:
+        build: 
+            context: .
+            dockerfile: Dockerfile
+        command: bash -c "sleep 15 && php /app/tests/yii.php migrate/up --interactive=0 && mkdir -p /app/runtime/assets && chmod -R 777 runtime"
+        volumes:
+            - ./:/app:delegated
+        depends_on:
+            - db
+        networks:
+            - my-network
+
 networks:
     my-network:
         driver: bridge
