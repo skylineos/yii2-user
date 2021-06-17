@@ -44,7 +44,7 @@ services:
         build: 
             context: .
             dockerfile: Dockerfile
-        command: bash -c "sleep 15 && php /app/tests/yii.php migrate/up --interactive=0"
+        command: bash -c "sleep 15 && php /app/tests/yii.php migrate/up --interactive=0 && mkdir -p /app/runtime/assets && chmod -R 777 runtime"
         volumes:
             - ./:/app:delegated
         depends_on:
