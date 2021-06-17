@@ -51,7 +51,7 @@ functional-tests:
     - apk add --no-cache python3-dev py3-pip openssl-dev libffi-dev gcc libc-dev rust cargo make curl
     - pip install docker-compose
     - docker-compose build
-    - docker-compose up
+    - docker-compose up -d 
   script:
     - docker-compose exec php /app/vendor/bin/codecept run functional
 
