@@ -74,7 +74,7 @@ class updatePageCest
     public function goodData(\FunctionalTester $I)
     {
         $I->fillField(['name' => 'User[name]'], 'Testy McTester');
-        $I->fillfield(['name' => 'User[email'], 'test-update@skylinenet.net');
+        $I->fillfield(['name' => 'User[email]'], 'test-update@skylinenet.net');
         $I->click('Update');
         $I->seeCurrentUrlEquals('/cms');
     }
