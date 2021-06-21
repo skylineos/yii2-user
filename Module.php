@@ -75,6 +75,12 @@ class Module extends \yii\base\Module implements BootstrapInterface
             $this->passwordRecoverySubject = \Yii::$app->params['passwordRecoverySubject'];
         }
 
+        if (\Yii::$app->params['testing'] === true) {
+            \Yii::setAlias('@viewRoot', \Yii::getAlias('@app'));
+        } else {
+            \Yii::setAlias('@viewRoot', '@vendor/skyline/yii.user');
+        }
+
         parent::init();
 
         // custom initialization code goes here

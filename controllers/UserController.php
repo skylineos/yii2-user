@@ -62,8 +62,7 @@ class UserController extends Controller
 
     public function beforeAction($action)
     {
-
-        if (!\Yii::$app->user->isGuest) {
+        if (!\Yii::$app->user->isGuest && YII_ENV !== 'test') {
             $this->layout = \Yii::$app->getModule('cms')->layout;
         }
         return true;
@@ -82,13 +81,13 @@ class UserController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+            return $this->goBack(\Yii::$app->getModule('user')->homeRedirect);
         }
 
         // Do not render the page with the user's previous password attempt. #security
         $model->password = '';
 
-        return $this->render('@vendor/skyline/yii.user/views/user/security/login', [
+        return $this->render('@viewRoot/views/user/security/login', [
             'model' => $model,
             'forgotPasswordModel' => new \skyline\yii\user\models\forms\RequestPasswordReset(),
         ]);
@@ -143,22 +142,27 @@ class UserController extends Controller
             $model->setResetToken(true);
 
             if ($model->save()) {
-                $appParams = \Yii::$app->params;
-                $email = new Email();
-                $email->toEmail = $model->email;
-                $email->subject = $userModule->newUserEmailSubject;
-                $email->template = '@vendor/skyline/yii.user/mail/create-account-html';
-                // allow that a logo may not currently exist
-                $email->params = [
-                    'logoSrc' => array_key_exists('logoPath', $appParams) ? \Yii::getAlias('@app') . $appParams['logoPath'] : '',
-                    'model' => $model,
-                ];
+                // Don't send an email if in testing
+                if (YII_ENV !== 'test') {
+                    $appParams = \Yii::$app->params;
+                    $email = new Email();
+                    $email->toEmail = $model->email;
+                    $email->subject = $userModule->newUserEmailSubject;
+                    $email->template = '@viewRoot/mail/create-account-html';
+                    // allow that a logo may not currently exist
+                    $email->params = [
+                        'logoSrc' => array_key_exists('logoPath', $appParams)
+                            ? \Yii::getAlias('@app') . $appParams['logoPath']
+                            : '',
+                        'model' => $model,
+                    ];
 
-                if ($email->sendEmail()) {
-                    \Yii::$app->session->setFlash('success', 'User Created');
-                } else {
-                    \Yii::$app->session->setFlash('warning', 'The user was created successfully, but the email could
-                    not be sent to the user.');
+                    if ($email->sendEmail()) {
+                        \Yii::$app->session->setFlash('success', 'User Created');
+                    } else {
+                        \Yii::$app->session->setFlash('warning', 'The user was created successfully, but the email could
+                        not be sent to the user.');
+                    }
                 }
 
                 return $this->redirect(['index']);
@@ -304,12 +308,16 @@ class UserController extends Controller
             }
         }
 
+        if (!$request->get('email') || !$request->get('token')) {
+            throw new \yii\web\ForbiddenHttpException();
+        }
+
         $user = User::findByToken($request->get('email'), $request->get('token'));
 
         /**
          * Make sure the expected parameters exist and are at least
          */
-        if ($request->get('email') === null || !$request->get('token') === null || $user === null) {
+        if ($user === null) {
             \Yii::$app->session->setFlash(
                 'resetFailed',
                 'We were unable to reset your password. Please contact support.'
@@ -320,7 +328,7 @@ class UserController extends Controller
         $model->email = $request->get('email');
         $model->token = $request->get('token');
 
-        return $this->render('@vendor/skyline/yii.user/views/user/recovery/reset', [
+        return $this->render('@viewRoot/views/user/recovery/reset', [
             'model' => $model,
             'user' => $user,
         ]);

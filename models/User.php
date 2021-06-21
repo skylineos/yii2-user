@@ -27,8 +27,8 @@ use yii\behaviors\BlameableBehavior;
  */
 class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
-    const STATUS_INACTIVE = 0;
-    const STATUS_ACTIVE = 1;
+    public const STATUS_INACTIVE = 0;
+    public const STATUS_ACTIVE = 1;
 
     /**
      * There is no property for password of verifyPassword, only passwordHash.

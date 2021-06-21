@@ -1,0 +1,58 @@
+version: '3.7'
+services:
+    php:
+        build: 
+            context: .
+            dockerfile: Dockerfile
+        tty: true
+        environment:
+          XDEBUG_MODE: 'coverage'
+          YII_ENV: 'test'
+        volumes:
+            - .:/app
+        networks:
+            - my-network
+        depends_on:
+            - db
+
+    db:
+        image: mysql:8.0
+        restart: always
+        environment:
+            - MYSQL_DATABASE=test
+            - MYSQL_USER=test
+            - MYSQL-PASSWORD=test
+            - MYSQL_ROOT_PASSWORD=rootpassword
+        ports:
+            - '3306:3306'
+        expose:
+            - "3306"
+        networks:
+            - my-network
+        cap_add:
+            - SYS_NICE  # CAP_SYS_NICE
+    
+    composer:
+        restart: 'no'
+        image: composer:latest
+        command: sh -c "ssh-keyscan -H gitlab.skyts.io >> ~/.ssh/known_hosts && composer update && composer install"
+        volumes:
+            - .:/app
+            - ~/.ssh/id_rsa:/root/.ssh/id_rsa          
+      
+    migration:
+        build: 
+            context: .
+            dockerfile: Dockerfile
+        command: bash -c "sleep 15 && php /app/tests/yii.php migrate/up --interactive=0 && mkdir -p /app/runtime/assets && chmod -R 777 runtime"
+        volumes:
+            - ./:/app:delegated
+        depends_on:
+            - db
+        networks:
+            - my-network
+
+networks:
+    my-network:
+        driver: bridge
+              
