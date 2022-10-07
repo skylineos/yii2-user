@@ -1,5 +1,5 @@
 {
-    "name": "skyline/yii.user",
+    "name": "skylineos/yii.user",
     "description": "Standalone user module with login, reset, mgmt, etc",
     "type": "yii2-extension",
     "license": "Apache-2.0",
@@ -42,10 +42,6 @@
         {
             "type": "composer",
             "url": "https://asset-packagist.org"
-        },
-        {
-            "type": "vcs",
-            "url": "git@gitlab.skyts.io:csg/yii/yii2.module.metronic.git"
         }
     ]
 }
