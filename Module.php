@@ -78,7 +78,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
         if (\array_key_exists('testing', \Yii::$app->params) && \Yii::$app->params['testing'] === true) {
             \Yii::setAlias('@viewRoot', \Yii::getAlias('@app'));
         } else {
-            \Yii::setAlias('@viewRoot', '@vendor/skyline/yii.user');
+            \Yii::setAlias('@viewRoot', '@vendor/skylineos/yii.user');
         }
 
         parent::init();

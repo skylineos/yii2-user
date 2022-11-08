@@ -74,7 +74,7 @@ In your configuration file (normally `config/web.php`) add the following entries
 
             // If you want to override the default layout
             // If you want to use the default layout within the module, set this
-            // to '@vendor/skyline/yii.user/views/layouts/login'
+            // to '@vendor/skylineos/yii.user/views/layouts/login'
             'layout' => '@app/.../views/layouts/<layout>'
 
             /**
@@ -143,11 +143,11 @@ Add the following parameters to the `params` key of your configuration file:
 
 In order to ensure that your database is setup properly, you will need to run the migrations located in the extension.
 
-`php yii migrate/up --migrationPath=@vendor/skyline/yii.user/migrations`
+`php yii migrate/up --migrationPath=@vendor/skylineos/yii.user/migrations`
 
 If something goes wrong with the migration, remove any lingering changes with this command:
 
-`php yii migrate/down --migrationPath=@vendor/skyline/yii.user/migrations`
+`php yii migrate/down --migrationPath=@vendor/skylineos/yii.user/migrations`
 
 
 ## Dependencies
@@ -156,7 +156,7 @@ If something goes wrong with the migration, remove any lingering changes with th
 
 ## Testing (Unit and Functional)
 
-This package ships with configuration and docker-compose for easy testing. Docker-compose will give you access to php 
+This package ships with configuration and docker-compose for easy testing. Docker-compose will give you access to php
 extensions, xdebug (for code coverage), composer (will install your dependencies), and a database for functional testing.
 
 1. `docker-compose build` *only necessary if this is your first run or if you've modified the Dockerfile*
@@ -172,10 +172,10 @@ Assuming you're bashed into the php container and in /app
 
 ### Testing Branches
 
-If you feel the need or think it's generally a good idea (it is), feel free to branch from `develop`. Otherwise, 
+If you feel the need or think it's generally a good idea (it is), feel free to branch from `develop`. Otherwise,
 for smaller updates, be sure to do all of your work on the `develop` branch. You are expected to submit a merge request.
 
 ### Testing Hints and Tips
 
-The team largely uses VSCode, it is *recommended* that you do as well. If you find extensions or workflows that are 
+The team largely uses VSCode, it is *recommended* that you do as well. If you find extensions or workflows that are
 mighty helpful, please feel free to add them here.
